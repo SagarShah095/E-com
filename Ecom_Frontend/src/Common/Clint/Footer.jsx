@@ -17,7 +17,8 @@ const Footer = () => {
               "Limited Edition",
             ].map((item, i) => (
               <div key={i} className="text-[#8D8D8D] font-poppins">
-                <h1 className="cursor-pointer">{item}</h1>
+                <h1 className="cursor-pointer w-fit relative after:content-[''] after:absolute after:-bottom-1 
+                after:w-0 hover:after:w-full after:left-0 after:h-[2px] after:bg-black/20 after:transition-all after:duration-300">{item}</h1>
               </div>
             ))}
           </div>
@@ -35,7 +36,10 @@ const Footer = () => {
               "Size Guide",
             ].map((item, i) => (
               <div key={i} className="text-[#8D8D8D] font-poppins">
-                <h1 className="cursor-pointer">{item}</h1>
+                <h1 className="cursor-pointer w-fit relative after:content-[''] after:absolute after:-bottom-1 
+                after:w-0 hover:after:w-full after:left-0 after:h-[2px] after:bg-black/20 after:transition-all after:duration-300">
+                  {item}
+                </h1>
               </div>
             ))}
           </div>
@@ -48,7 +52,8 @@ const Footer = () => {
             {["About Us", "Careers", "Sustainability", "Contact Us"].map(
               (item, i) => (
                 <div key={i} className="text-[#8D8D8D] font-poppins">
-                  <h1 className="cursor-pointer">{item}</h1>
+                  <h1  className="cursor-pointer w-fit relative after:content-[''] after:absolute after:-bottom-1 
+                after:w-0 hover:after:w-full after:left-0 after:h-[2px] after:bg-black/20 after:transition-all after:duration-300">{item}</h1>
                 </div>
               )
             )}
@@ -108,10 +113,26 @@ const Footer = () => {
           />
         </div>
         <div className="flex items-center gap-3">
-          <img src="/assets/Client/Home/instagram.png" alt="" className="cursor-pointer" />
-          <img src="/assets/Client/Home/youtube.png" alt="" className="cursor-pointer" />
-          <img src="/assets/Client/Home/pintrest.png" alt="" className="cursor-pointer" />
-          <img src="/assets/Client/Home/facebook.png" alt="" className="cursor-pointer" />
+          <img
+            src="/assets/Client/Home/instagram.png"
+            alt=""
+            className="cursor-pointer"
+          />
+          <img
+            src="/assets/Client/Home/youtube.png"
+            alt=""
+            className="cursor-pointer"
+          />
+          <img
+            src="/assets/Client/Home/pintrest.png"
+            alt=""
+            className="cursor-pointer"
+          />
+          <img
+            src="/assets/Client/Home/facebook.png"
+            alt=""
+            className="cursor-pointer"
+          />
         </div>
       </div>
     </div>

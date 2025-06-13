@@ -122,7 +122,7 @@ const Sports = () => {
                   style={{ backgroundImage: `url(${item.img})` }}
                   className="h-[25vh] bg-cover bg-no-repeat relative bg-center"
                 >
-                  <button className="bg-white w-fit py-1 absolute bottom-4 left-4 rounded-md uppercase font-poppins text-sm font-medium px-3">
+                  <button className="bg-white hover:bg-[#dadce0] duration-300 w-fit py-1 absolute bottom-4 left-4 rounded-md uppercase font-poppins text-sm font-medium px-3">
                     {item.title}
                   </button>
                 </div>

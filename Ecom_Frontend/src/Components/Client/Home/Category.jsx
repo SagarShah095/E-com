@@ -136,7 +136,7 @@ const Category = () => {
           <NavLink
             key={idx}
             className={`relative cursor-pointer text-center py-[10px] px-[20px] rounded-full transition duration-300 ${
-              active === label ? "bg-black text-white" : "bg-white text-black"
+              active === label ? "bg-black text-white" : "bg-white hover:bg-[#dadce0]/50 text-black"
             }`}
             onClick={() => setActive(label)}
           >
@@ -153,7 +153,7 @@ const Category = () => {
               {item.title}
             </h1>
             <h1 className="text-xs w-[95%] font-poppins">{item.desc}</h1>
-            <button className="uppercase bg-black text-white py-2 px-4 rounded-full">
+            <button className="uppercase hover:scale-105 duration-300 bg-black text-white py-2 px-4 rounded-full">
               SHOP NOW
             </button>
           </div>

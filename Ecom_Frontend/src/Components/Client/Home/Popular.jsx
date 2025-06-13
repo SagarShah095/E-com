@@ -109,15 +109,15 @@ const Popular = () => {
               <div key={i} className="p-2 space-y-2">
                 <div className="bg-[#EBEDEF] relative p-3">
                   <img src={item.img} alt="" className="h-full mt-8" />
-                  <button className="bg-white mt-5 p-2 uppercase text-sm font-medium font-poppins">
+                  <button className="bg-white hover:bg-[#dadce0] duration-300  mt-5 p-2 uppercase text-sm font-medium font-poppins">
                     {item.type}
                   </button>
-                  <p className="bg-white cursor-pointer p-3 rounded-full w-fit absolute top-2 right-2">
+                  <p className="bg-white hover:bg-[#dadce0] duration-300 cursor-pointer p-3 rounded-full w-fit absolute top-2 right-2">
                     <FaRegHeart />
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="uppercase text-xs font-poppins font-medium">
+                  <div className="uppercase  text-xs font-poppins font-medium">
                     {item.title}
                   </div>
                   <div className="flex items-center text-sm gap-1">

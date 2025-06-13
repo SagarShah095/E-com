@@ -12,7 +12,7 @@ const Banner = () => {
             Whether you're a striker, midfielder, or defender — these boots are
             made to level up your play.
           </p>
-          <button className="text-black bg-white p-3 px-7 font-semibold font-poppins w-fit rounded-full">
+          <button className="text-black bg-white p-3 px-7 hover:bg-[#dadce0] duration-300 font-semibold font-poppins w-fit rounded-full">
             SHOP NOW
           </button>
         </div>
