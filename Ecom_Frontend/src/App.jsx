@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Common/Clint/Navbar";
 import Home from "./Pages/Clint/Home";
+import Footer from "./Common/Clint/Footer";
 
 // Sample pages
 
@@ -14,6 +15,7 @@ function App() {
 
         {/* Add more routes as needed */}
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

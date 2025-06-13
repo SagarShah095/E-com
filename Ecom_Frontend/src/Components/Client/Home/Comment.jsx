@@ -4,7 +4,6 @@ import Slider from "react-slick";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { IoStar } from "react-icons/io5";
 
-
 const NextArrow = (props) => {
   const { onClick, currentSlide, slideCount } = props;
   const isDisabled = currentSlide === slideCount - 4;
@@ -56,7 +55,6 @@ const PrevArrow = (props) => {
     </div>
   );
 };
-
 
 const Comment = () => {
   const [current, setCurrent] = useState(0);
@@ -126,18 +124,30 @@ const Comment = () => {
     <div className="pl-6 sm:pl-12 md:pl-24 flex flex-col gap-5 mt-14 relative">
       <div>
         <div>
-          <h1 className="text-2xl font-semibold font-poppins">
+          <h1 className="text-2xl uppercase font-semibold font-poppins">
             What Our Customers Say
           </h1>
         </div>
         <div>
-          <div className="mt-5">
+          <div className="mt-5 ">
             <Slider {...settings}>
               {data.map((item, i) => (
-                <div key={i} className="p-2 space-y-2">
-                  {/* <img src={item.img} alt="" className="h-full mt-8" /> */}
+                <div key={i} className="p-2">
+                  <div className="flex flex-col space-y-2 bg-white justify-between w-full p-2 items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-1">
+                        <IoStar />
+                        <IoStar />
+                        <IoStar />
+                        <IoStar /> 4
+                      </div>
+                      <div>12 May 2025</div>
+                    </div>
 
-                  <h1>{item.title}</h1>
+                    <div>
+                      <h1>"{item.title}"</h1>
+                    </div>
+                  </div>
                 </div>
               ))}
             </Slider>
