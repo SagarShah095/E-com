@@ -39,14 +39,14 @@ const Navbar = () => {
           </div>
 
           <div className="uppercase font-poppins font-semibold w-[7%] flex justify-between ">
-            <NavLink>
-              <CgSearch className="font-poppins font-semibold" />
+            <NavLink className="hover:bg-[#F5F5F5] p-2 rounded-full duration-300">
+              <CgSearch className="font-poppins font-semibold h-full w-5 " />
             </NavLink>
-            <NavLink>
-              <GoPerson className="font-poppins font-semibold" />
+            <NavLink className="hover:bg-[#F5F5F5] p-2 rounded-full duration-300">
+              <GoPerson className="font-poppins font-semibold h-full w-5" />
             </NavLink>
-            <NavLink>
-              <IoBagOutline className="font-poppins font-semibold" />
+            <NavLink className="hover:bg-[#F5F5F5] p-2 rounded-full duration-300">
+              <IoBagOutline className="font-poppins font-semibold h-full w-5" />
             </NavLink>
           </div>
         </div>
