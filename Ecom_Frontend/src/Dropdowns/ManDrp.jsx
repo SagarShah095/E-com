@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { NavLink } from "react-router-dom";
 
 const ManDrp = ({ setShow }) => {
   const timerRef = useRef(null);
@@ -152,20 +153,20 @@ const ManDrp = ({ setShow }) => {
           {/* Shop By User */}
           <div>
             <h3 className="font-bold text-lg mb-2">Shop By User</h3>
-            <ul className="space-y-1 text-sm text-[#8D8D8D] flex flex-col gap-1 font-medium">
-              <li className="cursor-pointer hover:text-gray-600 duration-200">
+            <div className="space-y-1 text-sm text-[#8D8D8D] flex flex-col gap-1 font-medium">
+              <NavLink to="/mens-collection" className="cursor-pointer hover:text-gray-600 duration-200">
                 Men's Collection
-              </li>
-              <li className="cursor-pointer hover:text-gray-600 duration-200">
+              </NavLink>
+              <NavLink className="cursor-pointer hover:text-gray-600 duration-200">
                 Women's Picks
-              </li>
-              <li className="cursor-pointer hover:text-gray-600 duration-200">
+              </NavLink>
+              <NavLink className="cursor-pointer hover:text-gray-600 duration-200">
                 Kids & Juniors
-              </li>
-              <li className="cursor-pointer hover:text-gray-600 duration-200">
+              </NavLink>
+              <NavLink className="cursor-pointer hover:text-gray-600 duration-200">
                 Unisex Designs
-              </li>
-            </ul>
+              </NavLink>
+            </div>
           </div>
 
           {/* Shop By Sport */}

@@ -16,7 +16,6 @@ const Home = ({ show, setShow }) => {
       <Sports />
       <Comment />
       <Brands />
-      
     </div>
   );
 };

@@ -7,6 +7,8 @@ import Login from "./Shared/Login";
 import Signup from "./Shared/Signup";
 import NewArival from "./Pages/Clint/NewArival";
 import ManDrp from "./Dropdowns/ManDrp";
+import ManCollection from "./ManCategory/ManCollection";
+import Sales from "./Pages/Clint/Sales";
 
 const AppContent = () => {
   const [show, setShow] = useState(false);
@@ -22,14 +24,16 @@ const AppContent = () => {
 
         <Routes>
           <Route path="/" element={<Home setShow={setShow} show={show} />} />
+          <Route path="/mens-collection" element={<ManCollection />} />
           <Route path="/new-arival" element={<NewArival />} />
+          <Route path="/sale" element={<Sales />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           {/* Add more routes here */}
         </Routes>
         {show && <ManDrp setShow={setShow}/>}
       </div>
-
+{/* mens-collection */}
       {!hideNavFooter && <Footer />}
     </>
   );
