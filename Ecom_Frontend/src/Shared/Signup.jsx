@@ -5,13 +5,10 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
+    username: "",
     email: "",
     password: "",
-    marketing: false,
-  });
+      });
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -49,7 +46,7 @@ const Signup = () => {
             type="text"
             name="username"
             placeholder="Username"
-            value={form.dob}
+            value={form.username}
             onChange={handleChange}
             required
             className="w-full border  bg-[#f9f9f9] rounded-lg px-3 py-3 focus:outline-none"

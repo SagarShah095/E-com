@@ -5,10 +5,12 @@ import Home from "./Pages/Clint/Home";
 import Footer from "./Common/Clint/Footer";
 import Login from "./Shared/Login";
 import Signup from "./Shared/Signup";
+import NewArival from "./Pages/Clint/NewArival";
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavFooter = location.pathname === "/login" || "/signup";
+  const hideNavFooter = location.pathname === "/login" || location.pathname === "/signup";
+
 
   return (
     <>
@@ -16,6 +18,7 @@ const AppContent = () => {
       
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/new-arival" element={<NewArival />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {/* Add more routes here */}
