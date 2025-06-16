@@ -21,7 +21,12 @@ const Filter = () => {
   const [colorOpen, setColorOpen] = useState(true);
   const [priceOpen, setPriceOpen] = useState(true);
 
-  const options = ["PRICE: LOW TO HIGH", "PRICE: HIGH TO LOW", "RELEVANCY", "NEWEST"];
+  const options = [
+    "PRICE: LOW TO HIGH",
+    "PRICE: HIGH TO LOW",
+    "RELEVANCY",
+    "NEWEST",
+  ];
 
   const handleSingleSelect = (stateSetter, currentValue, item) => {
     if (currentValue === item) {
@@ -37,7 +42,9 @@ const Filter = () => {
     <div className="h-screen overflow-y-scroll">
       <div className="flex justify-between w-full items-center my-3">
         <h1 className="uppercase font-medium font-poppins">FILTER & SORT</h1>
-        <h1 className="text-xs cursor-pointer font-medium font-poppins">CLEAR ALL</h1>
+        <h1 className="text-xs cursor-pointer font-medium font-poppins">
+          CLEAR ALL
+        </h1>
       </div>
 
       {/* SORT */}
@@ -47,11 +54,21 @@ const Filter = () => {
           onClick={() => setSortOpen(!sortOpen)}
         >
           <h1 className="uppercase font-medium">Sort</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${sortOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              sortOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: sortOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: sortOpen ? "500px" : "0px" }}
+        >
           {options.map((item, i) => (
-            <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
+            <label
+              key={i}
+              className="flex gap-2 text-sm font-poppins cursor-pointer"
+            >
               <input
                 type="checkbox"
                 checked={selected === item}
@@ -70,11 +87,21 @@ const Filter = () => {
           onClick={() => setGenderOpen(!genderOpen)}
         >
           <h1 className="uppercase font-medium">Gender</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${genderOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              genderOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: genderOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: genderOpen ? "500px" : "0px" }}
+        >
           {["MALE", "FEMALE"].map((item, i) => (
-            <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
+            <label
+              key={i}
+              className="flex gap-2 text-sm font-poppins cursor-pointer"
+            >
               <input
                 type="checkbox"
                 checked={gender === item}
@@ -93,11 +120,21 @@ const Filter = () => {
           onClick={() => setKidOpen(!kidOpen)}
         >
           <h1 className="uppercase font-medium">Kids</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${kidOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              kidOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: kidOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: kidOpen ? "500px" : "0px" }}
+        >
           {["GIRL", "BOY"].map((item, i) => (
-            <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
+            <label
+              key={i}
+              className="flex gap-2 text-sm font-poppins cursor-pointer"
+            >
               <input
                 type="checkbox"
                 checked={kid === item}
@@ -116,12 +153,31 @@ const Filter = () => {
           onClick={() => setBrandOpen(!brandOpen)}
         >
           <h1 className="uppercase font-medium">Brand</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${brandOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              brandOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: brandOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: brandOpen ? "500px" : "0px" }}
+        >
           <div className="grid grid-cols-2 gap-1">
-            {["NIKE", "ADIDAS", "PUMA", "REEBOK", "SKECHERS", "VANS", "BATA", "Relaxo"].map((item, i) => (
-              <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
+            {[
+              "NIKE",
+              "ADIDAS",
+              "PUMA",
+              "REEBOK",
+              "SKECHERS",
+              "VANS",
+              "BATA",
+              "Relaxo",
+            ].map((item, i) => (
+              <label
+                key={i}
+                className="flex gap-2 text-sm font-poppins cursor-pointer"
+              >
                 <input
                   type="checkbox"
                   checked={brand === item}
@@ -131,16 +187,21 @@ const Filter = () => {
               </label>
             ))}
           </div>
-          {["Sparx", "Gucci", "Balenciaga", "Prada", "Louis Vuitton"].map((item, i) => (
-            <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
-              <input
-                type="checkbox"
-                checked={brand === item}
-                onChange={() => handleSingleSelect(setBrand, brand, item)}
-              />
-              {item}
-            </label>
-          ))}
+          {["Sparx", "Gucci", "Balenciaga", "Prada", "Louis Vuitton"].map(
+            (item, i) => (
+              <label
+                key={i}
+                className="flex gap-2 text-sm font-poppins cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={brand === item}
+                  onChange={() => handleSingleSelect(setBrand, brand, item)}
+                />
+                {item}
+              </label>
+            )
+          )}
         </div>
       </div>
 
@@ -151,11 +212,27 @@ const Filter = () => {
           onClick={() => setLaunchOpen(!launchOpen)}
         >
           <h1 className="uppercase font-medium">Launch Date</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${launchOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              launchOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: launchOpen ? "500px" : "0px" }}>
-          {["7 DAY AGO", "1 MONTH AGO", "3 MONTH AGO", "6 MONTH AGO", "1 YEAR AGO"].map((item, i) => (
-            <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: launchOpen ? "500px" : "0px" }}
+        >
+          {[
+            "7 DAY AGO",
+            "1 MONTH AGO",
+            "3 MONTH AGO",
+            "6 MONTH AGO",
+            "1 YEAR AGO",
+          ].map((item, i) => (
+            <label
+              key={i}
+              className="flex gap-2 text-sm font-poppins cursor-pointer"
+            >
               <input
                 type="checkbox"
                 checked={launch === item}
@@ -174,20 +251,32 @@ const Filter = () => {
           onClick={() => setSizeOpen(!sizeOpen)}
         >
           <h1 className="uppercase font-medium">Size</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${sizeOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              sizeOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: sizeOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: sizeOpen ? "500px" : "0px" }}
+        >
           <div className="grid grid-cols-3 gap-1">
-            {["6 UK", "7 UK", "8 UK", "9 UK", "10 UK", "11 UK", "12 UK"].map((item, i) => (
-              <label key={i} className="flex gap-2 font-[500] font-poppins cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={size === item}
-                  onChange={() => handleSingleSelect(setSize, size, item)}
-                />
-                {item}
-              </label>
-            ))}
+            {["6 UK", "7 UK", "8 UK", "9 UK", "10 UK", "11 UK", "12 UK"].map(
+              (item, i) => (
+                <label
+                  key={i}
+                  className="flex gap-2 text-sm font-poppins cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={size === item}
+                    onChange={() => handleSingleSelect(setSize, size, item)}
+                  />
+                  {item}
+                </label>
+              )
+            )}
           </div>
         </div>
       </div>
@@ -199,18 +288,40 @@ const Filter = () => {
           onClick={() => setColorOpen(!colorOpen)}
         >
           <h1 className="uppercase font-medium">Color</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${colorOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              colorOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: colorOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: colorOpen ? "500px" : "0px" }}
+        >
           <div className="grid grid-cols-3 gap-1">
-            {["#eb2e21", "#e3891b", "#1a1919", "#dedbd7", "#656907", "#206dba", "#5820ba", "#bd193f"].map((item, i) => (
-              <label key={i} className="flex gap-2 items-center font-[500] font-poppins cursor-pointer">
+            {[
+              "#eb2e21",
+              "#e3891b",
+              "#1a1919",
+              "#dedbd7",
+              "#656907",
+              "#206dba",
+              "#5820ba",
+              "#bd193f",
+            ].map((item, i) => (
+              <label
+                key={i}
+                className="flex gap-2 items-center text-sm font-poppins cursor-pointer"
+              >
                 <input
                   type="checkbox"
                   checked={color === item}
                   onChange={() => handleSingleSelect(setColor, color, item)}
                 />
-                <span className="p-2 rounded-full border" style={{ backgroundColor: item }}></span>
+                <span
+                  className="p-2 rounded-full border"
+                  style={{ backgroundColor: item }}
+                ></span>
               </label>
             ))}
           </div>
@@ -224,9 +335,16 @@ const Filter = () => {
           onClick={() => setPriceOpen(!priceOpen)}
         >
           <h1 className="uppercase font-medium">Price</h1>
-          <IoIosArrowUp className={`w-5 h-5 transform transition-transform duration-300 ${priceOpen ? "" : "rotate-180"}`} />
+          <IoIosArrowUp
+            className={`w-5 h-5 transform transition-transform duration-300 ${
+              priceOpen ? "" : "rotate-180"
+            }`}
+          />
         </div>
-        <div className={`${toggleClass}`} style={{ maxHeight: priceOpen ? "500px" : "0px" }}>
+        <div
+          className={`${toggleClass}`}
+          style={{ maxHeight: priceOpen ? "500px" : "0px" }}
+        >
           <ReactSlider
             className="w-full h-2 mt-4 rounded-full relative"
             thumbClassName="bg-black w-5 h-5 rounded-full cursor-pointer shadow-md transition-transform duration-150 -mt-1.5 hover:scale-110"

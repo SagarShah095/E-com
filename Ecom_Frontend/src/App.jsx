@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./Common/Clint/Navbar";
 import Home from "./Pages/Clint/Home";
@@ -6,23 +6,29 @@ import Footer from "./Common/Clint/Footer";
 import Login from "./Shared/Login";
 import Signup from "./Shared/Signup";
 import NewArival from "./Pages/Clint/NewArival";
+import ManDrp from "./Dropdowns/ManDrp";
 
 const AppContent = () => {
-  const location = useLocation();
-  const hideNavFooter = location.pathname === "/login" || location.pathname === "/signup";
+  const [show, setShow] = useState(false);
 
+  const location = useLocation();
+  const hideNavFooter =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <>
-      {!hideNavFooter && <Navbar />}
-      
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/new-arival" element={<NewArival />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        {/* Add more routes here */}
-      </Routes>
+      <div className="relative">
+        {!hideNavFooter && <Navbar setShow={setShow} show={show} />}
+
+        <Routes>
+          <Route path="/" element={<Home setShow={setShow} show={show} />} />
+          <Route path="/new-arival" element={<NewArival />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* Add more routes here */}
+        </Routes>
+        {show && <ManDrp setShow={setShow}/>}
+      </div>
 
       {!hideNavFooter && <Footer />}
     </>

@@ -9,7 +9,7 @@ const Hero = () => {
   const data = [
     {
       img: "/assets/Client/Home/shoes1.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#C53332",
       color2: "#3261C5",
@@ -18,7 +18,7 @@ const Hero = () => {
     },
     {
       img: "/assets/Client/Home/shoes2.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#C53332",
       color2: "#3261C5",
@@ -27,7 +27,7 @@ const Hero = () => {
     },
     {
       img: "/assets/Client/Home/shoes3.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#B67F8B",
       color2: "#B6967F",
@@ -36,7 +36,7 @@ const Hero = () => {
     },
     {
       img: "/assets/Client/Home/shoes2.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#C53332",
       color2: "#3261C5",
@@ -45,7 +45,7 @@ const Hero = () => {
     },
     {
       img: "/assets/Client/Home/shoes2.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#C53332",
       color2: "#3261C5",
@@ -54,7 +54,7 @@ const Hero = () => {
     },
     {
       img: "/assets/Client/Home/shoes3.png",
-      type: "Football TShoes",
+      type: "Football Shoes",
       title: "SpeedPro X1 Football Cleats",
       color1: "#C53332",
       color2: "#3261C5",
@@ -69,7 +69,7 @@ const Hero = () => {
             <div key={i} className="p-2 space-y-2">
               <div className="bg-[#EBEDEF] relative p-3">
                 <img src={item.img} alt="" className="h-[70%] mt-8" />
-                <button className="bg-white hover:bg-[#dadce0] duration-300  mt-5 p-2 uppercase text-sm font-medium font-poppins">
+                <button className="bg-white hover:bg-[#dadce0] duration-300  mt-5 p-2 uppercase text-sm font-semibold font-poppins">
                   {item.type}
                 </button>
                 <p className="bg-white hover:bg-[#dadce0] duration-300 cursor-pointer p-3 rounded-full w-fit absolute top-2 right-2">
@@ -77,7 +77,7 @@ const Hero = () => {
                 </p>
               </div>
               <div className="flex items-center justify-between">
-                <div className="uppercase  text-xs font-poppins font-medium">
+                <div className="uppercase text-xs font-poppins font-medium">
                   {item.title}
                 </div>
                 <div className="flex items-center text-sm gap-1">
