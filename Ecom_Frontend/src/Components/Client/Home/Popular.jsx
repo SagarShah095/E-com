@@ -3,6 +3,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import Slider from "react-slick";
 import { FaRegHeart } from "react-icons/fa";
 import { IoStar } from "react-icons/io5";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NextArrow = ({ onClick, currentSlide, slideCount, slidesToShow }) => {
   const isDisabled = currentSlide >= slideCount - slidesToShow;
@@ -46,13 +47,63 @@ const Popular = () => {
   const [current, setCurrent] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(4.5);
 
+  const navigate = useNavigate();
+
   const data = [
-    { img: "/assets/Client/Home/shoes1.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#C53332", color2: "#3261C5", color3: "#000000", price: "₹3,999" },
-    { img: "/assets/Client/Home/shoes2.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#C53332", color2: "#3261C5", color3: "#000000", price: "₹3,999" },
-    { img: "/assets/Client/Home/shoes3.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#B67F8B", color2: "#B6967F", color3: "#84B67F", price: "₹3,999" },
-    { img: "/assets/Client/Home/shoes2.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#C53332", color2: "#3261C5", color3: "#000000", price: "₹3,999" },
-    { img: "/assets/Client/Home/shoes2.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#C53332", color2: "#3261C5", color3: "#000000", price: "₹3,999" },
-    { img: "/assets/Client/Home/shoes3.png", type: "Football TShoes", title: "SpeedPro X1 Football Cleats", color1: "#C53332", color2: "#3261C5", color3: "#000000", price: "₹3,999" },
+    {
+      img: "/assets/Client/Home/shoes1.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#C53332",
+      color2: "#3261C5",
+      color3: "#000000",
+      price: "₹3,999",
+    },
+    {
+      img: "/assets/Client/Home/shoes2.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#C53332",
+      color2: "#3261C5",
+      color3: "#000000",
+      price: "₹3,999",
+    },
+    {
+      img: "/assets/Client/Home/shoes3.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#B67F8B",
+      color2: "#B6967F",
+      color3: "#84B67F",
+      price: "₹3,999",
+    },
+    {
+      img: "/assets/Client/Home/shoes2.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#C53332",
+      color2: "#3261C5",
+      color3: "#000000",
+      price: "₹3,999",
+    },
+    {
+      img: "/assets/Client/Home/shoes2.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#C53332",
+      color2: "#3261C5",
+      color3: "#000000",
+      price: "₹3,999",
+    },
+    {
+      img: "/assets/Client/Home/shoes3.png",
+      type: "Football TShoes",
+      title: "SpeedPro X1 Football Cleats",
+      color1: "#C53332",
+      color2: "#3261C5",
+      color3: "#000000",
+      price: "₹3,999",
+    },
   ];
 
   useEffect(() => {
@@ -100,14 +151,18 @@ const Popular = () => {
             POPULAR RIGHT NOW
           </h1>
           <p className="text-sm font-poppins">
-            Trending Styles Loved By Thousands. Shop Our Most Popular Picks Before They’re Gone.
+            Trending Styles Loved By Thousands. Shop Our Most Popular Picks
+            Before They’re Gone.
           </p>
         </div>
         <div className="mt-5">
           <Slider {...settings}>
             {data.map((item, i) => (
               <div key={i} className="p-2 space-y-2">
-                <div className="bg-[#EBEDEF] relative p-3">
+                <div
+                  className="bg-[#EBEDEF] cursor-pointer relative p-3"
+                  onClick={() => navigate("/product-shoes")}
+                >
                   <img src={item.img} alt="" className="h-full mt-8" />
                   <button className="bg-white hover:bg-[#dadce0] duration-300  mt-5 p-2 uppercase text-sm font-medium font-poppins">
                     {item.type}
@@ -136,7 +191,9 @@ const Popular = () => {
                       }
                       style={{ backgroundColor: color }}
                       className={`w-5 h-5 cursor-pointer rounded-full border-2 ${
-                        activeColors[i] === color ? "border-black" : "border-transparent"
+                        activeColors[i] === color
+                          ? "border-black"
+                          : "border-transparent"
                       }`}
                     ></div>
                   ))}

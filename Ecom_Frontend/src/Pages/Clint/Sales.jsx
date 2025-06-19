@@ -5,9 +5,9 @@ import SalesHero from "../../Components/Client/Sales/SalesHero";
 
 const Sales = () => {
   return (
-    <div>
+    <div className="pt-28">
       <Banner3 />
-      <div className="px-24">
+      <div className="px-24 ">
         <div>
           <h1 className="uppercase font-semibold font-poppins">SALES</h1>
         </div>

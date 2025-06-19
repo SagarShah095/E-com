@@ -5,7 +5,7 @@ import MansHero from "../Components/Client/MansCollection/MansHero";
 
 const ManCollection = () => {
   return (
-    <div>
+    <div className="pt-28">
       <Banner2 />
       <div className="px-24">
         <div>

@@ -7,7 +7,7 @@ const LoginRoute = require("./Router/LoginRoute");
 const { createAdmin } = require("./Controller/LoginController");
 const cors = require("cors");
 
-dotenv.config();
+require("dotenv").config();
 
 const app = express();
 

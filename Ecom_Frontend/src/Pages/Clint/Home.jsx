@@ -5,11 +5,10 @@ import Popular from "../../Components/Client/Home/Popular";
 import Sports from "../../Components/Client/Home/Sports";
 import Brands from "../../Components/Client/Home/Brands";
 import Comment from "../../Components/Client/Home/Comment";
-import ManDrp from "../../Dropdowns/ManDrp";
 
-const Home = ({ show, setShow }) => {
+const Home = () => {
   return (
-    <div className="bg-[#F5F5F5]">
+    <div className="bg-[#F5F5F5] pt-28">
       <Banner />
       <Category />
       <Popular />

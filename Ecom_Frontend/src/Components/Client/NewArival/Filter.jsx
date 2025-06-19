@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import ReactSlider from "react-slider";
+import "../../../index.css";
 
 const Filter = () => {
   const [selected, setSelected] = useState(null);
@@ -39,7 +40,7 @@ const Filter = () => {
   const toggleClass = "transition-all duration-300 ease-in-out overflow-hidden";
 
   return (
-    <div className="h-screen overflow-y-scroll">
+    <div className="h-screen scrollbar-hide overflow-y-scroll">
       <div className="flex justify-between w-full items-center my-3">
         <h1 className="uppercase font-medium font-poppins">FILTER & SORT</h1>
         <h1 className="text-xs cursor-pointer font-medium font-poppins">
@@ -73,6 +74,7 @@ const Filter = () => {
                 type="checkbox"
                 checked={selected === item}
                 onChange={() => handleSingleSelect(setSelected, selected, item)}
+                className="accent-black"
               />
               {item}
             </label>
@@ -106,6 +108,7 @@ const Filter = () => {
                 type="checkbox"
                 checked={gender === item}
                 onChange={() => handleSingleSelect(setGender, gender, item)}
+                className="accent-black"
               />
               {item}
             </label>
@@ -139,6 +142,7 @@ const Filter = () => {
                 type="checkbox"
                 checked={kid === item}
                 onChange={() => handleSingleSelect(setKid, kid, item)}
+                className="accent-black"
               />
               {item}
             </label>
@@ -182,6 +186,7 @@ const Filter = () => {
                   type="checkbox"
                   checked={brand === item}
                   onChange={() => handleSingleSelect(setBrand, brand, item)}
+                  className="accent-black"
                 />
                 {item}
               </label>
@@ -197,6 +202,7 @@ const Filter = () => {
                   type="checkbox"
                   checked={brand === item}
                   onChange={() => handleSingleSelect(setBrand, brand, item)}
+                  className="accent-black"
                 />
                 {item}
               </label>
@@ -237,6 +243,7 @@ const Filter = () => {
                 type="checkbox"
                 checked={launch === item}
                 onChange={() => handleSingleSelect(setLaunch, launch, item)}
+                className="accent-black"
               />
               {item}
             </label>
@@ -272,6 +279,7 @@ const Filter = () => {
                     type="checkbox"
                     checked={size === item}
                     onChange={() => handleSingleSelect(setSize, size, item)}
+                    className="accent-black"
                   />
                   {item}
                 </label>
@@ -317,6 +325,7 @@ const Filter = () => {
                   type="checkbox"
                   checked={color === item}
                   onChange={() => handleSingleSelect(setColor, color, item)}
+                  className="accent-black"
                 />
                 <span
                   className="p-2 rounded-full border"

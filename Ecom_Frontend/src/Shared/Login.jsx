@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const { setUser, setIsAuthenticated } = useAuth(); // ✅ Get setters from context
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -17,10 +24,25 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(form);
+    try {
+      const response = await axios.post(`${API_URL}/api/auth/login`, form);
+
+      if (response?.status === 201) {
+        const token = response.data.token;
+
+        // ✅ Save to localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        navigate("/");
+      } else {
+        console.log("Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error?.response?.data?.message || error);
+    }
   };
 
   return (
@@ -33,7 +55,8 @@ const Login = () => {
           Laceup Login
         </h1>
         <p className="text-center text-sm text-gray-600 mb-6">
-          Access your account securely and stay connected to everything that matters.
+          Access your account securely and stay connected to everything that
+          matters.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,7 +86,11 @@ const Login = () => {
               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
               onClick={togglePassword}
             >
-              {showPassword ? <FiEyeOff className="text-black/40"/> : <FiEye className="text-black/40" />}
+              {showPassword ? (
+                <FiEyeOff className="text-black/40" />
+              ) : (
+                <FiEye className="text-black/40" />
+              )}
             </div>
           </div>
 

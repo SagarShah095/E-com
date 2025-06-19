@@ -19,25 +19,38 @@ const register = async (req, res) => {
       email,
       "🎉 Welcome to Our App!",
       `
-          <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
-            <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-              <div style="background-color: #4CAF50; color: white; padding: 20px 30px;">
-                <h1 style="margin: 0;">Welcome, ${username} 👋</h1>
-              </div>
-              <div style="padding: 30px;">
-                <p style="font-size: 16px; color: #333;">Thank you for registering with <strong>Our App</strong>.</p>
-                <p style="font-size: 16px; color: #555;">
-                  We’re excited to have you on board. You can now log in and explore all the amazing features waiting for you!
-                </p>
-                <a href="http://localhost:5173/login" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Login Now</a>
-                <p style="margin-top: 30px; font-size: 14px; color: #999;">If you didn’t sign up for this account, you can ignore this email.</p>
-              </div>
-              <div style="background-color: #f1f1f1; text-align: center; padding: 15px;">
-                <p style="margin: 0; font-size: 12px; color: #777;">&copy; ${new Date().getFullYear()} Our App. All rights reserved.</p>
-              </div>
-            </div>
+  <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f5f5f5; padding: 40px;">
+    <table style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);">
+      <tr>
+        <td style="background-color: #000000; padding: 30px; text-align: center; color: #ffffff;">
+          <h1 style="margin: 0; font-size: 24px;">Welcome, ${username} 👋</h1>
+          <p style="margin: 8px 0 0; font-size: 14px; color: #cccccc;">Thanks for joining Our App</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 30px 40px; color: #333333;">
+          <p style="font-size: 15px; line-height: 1.6; color: #555555;">
+            We're excited to have you onboard. Your account is ready and you can now log in to explore everything Our App has to offer.
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="http://localhost:5173/login" style="background-color: #333333; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 500; display: inline-block;">
+              Login Now
+            </a>
           </div>
-      `
+          <p style="font-size: 13px; color: #999999; text-align: center;">
+            If you did not sign up for this account, please ignore this email.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background-color: #f0f0f0; text-align: center; padding: 20px; font-size: 12px; color: #777777;">
+          &copy; ${new Date().getFullYear()} Our App. All rights reserved.<br/>
+          <a href="http://localhost:5173" style="color: #333333; text-decoration: none;">Visit our site</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+  `
     );
 
     res.status(201).json({ message: "User registered and email sent!" });
@@ -69,6 +82,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
+    // console.log(user,"user")
     if (!user) return res.status(501).json({ message: "User not Found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -76,9 +90,9 @@ const login = async (req, res) => {
       return res.status(501).json({ message: "Incorrect Password" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "100h",
+      expiresIn: "30d",
     });
-    res.json({
+    res.status(201).json({
       token,
       user: { id: user._id, username: user.username, email: user.email },
     });
@@ -86,6 +100,23 @@ const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getlogData = async(req,res) => {
+  try {
+    const data = await User.find();
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    console.error("Error in getlogData:", error);
+    return res.status(500).json({
+      success: false,
+      message: "getlogData server error",
+      error: error.message,
+    });
+  }
+}
 
 const updatePass = async (req, res) => {
   const { email, password } = req.body;
@@ -121,4 +152,20 @@ const updatePass = async (req, res) => {
   }
 };
 
-module.exports = { register, login, updatePass, createAdmin };
+const verifyUser = async (req, res) => {
+  try {
+    await res.status(201).json({
+      success: true,
+      message: "Profile data",
+      user: req.user,
+    });
+    console.log(req.user);
+  } catch (error) {
+    res.status(501).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
+module.exports = { register, login, updatePass, createAdmin, verifyUser, getlogData};

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "./../../node_modules/axios/lib/axios";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,7 +9,11 @@ const Signup = () => {
     username: "",
     email: "",
     password: "",
-      });
+  });
+
+  const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
@@ -22,9 +27,21 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  console.log(API_URL);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Handle registration logic
+    try {
+      const response = await axios.post(`${API_URL}/api/auth/register`, form);
+      if (response?.status === 201) {
+        navigate("/login");
+      } else {
+        console.log("error in registration");
+      }
+      console.log(response);
+    } catch (error) {
+      console.log("error in register frontend");
+    }
     console.log(form);
   };
 
