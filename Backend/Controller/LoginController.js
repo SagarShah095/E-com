@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, firstname, secondname, phonenumber, gender, } = req.body;
   try {
     const exsitingUser = await User.findOne({ email });
     if (exsitingUser)
@@ -101,7 +101,7 @@ const login = async (req, res) => {
   }
 };
 
-const getlogData = async(req,res) => {
+const getlogData = async (req, res) => {
   try {
     const data = await User.find();
     return res.status(200).json({
@@ -116,7 +116,7 @@ const getlogData = async(req,res) => {
       error: error.message,
     });
   }
-}
+};
 
 const updatePass = async (req, res) => {
   const { email, password } = req.body;
@@ -152,6 +152,42 @@ const updatePass = async (req, res) => {
   }
 };
 
+const PersonalInfo = async (req, res) => {
+  const { firstname, secondname, gender, email, phonenumber, _id } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        firstname,
+        secondname,
+        gender,
+        email,
+        phonenumber,
+      },
+      { new: true } // returns updated document
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Personal information updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.error("Update failed:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating personal info",
+    });
+  }
+};
+
 const verifyUser = async (req, res) => {
   try {
     await res.status(201).json({
@@ -168,4 +204,12 @@ const verifyUser = async (req, res) => {
   }
 };
 
-module.exports = { register, login, updatePass, createAdmin, verifyUser, getlogData};
+module.exports = {
+  register,
+  login,
+  updatePass,
+  createAdmin,
+  verifyUser,
+  getlogData,
+  PersonalInfo,
+};

@@ -6,6 +6,7 @@ const {
   updatePass,
   verifyUser,
   getlogData,
+  PersonalInfo,
 } = require("../Controller/LoginController");
 
 
@@ -16,5 +17,6 @@ router.post("/login", login);
 router.put("/updatePass", updatePass);
 router.get("/verify", verifyToken, verifyUser);
 router.get("/getuser", getlogData);
+router.put("/updateinfo", PersonalInfo);
 
 module.exports = router;

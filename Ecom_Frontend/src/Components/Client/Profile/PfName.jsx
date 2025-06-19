@@ -1,6 +1,18 @@
 import React from "react";
+import { useAuth } from "../../../context/AuthContext";
+import { useState } from "react";
 
 const PfName = () => {
+  const [info, setInfo] = useState({
+    firstname: "",
+    secondname: "",
+    phonenumber: "",
+    gender: "",
+    email: "",
+  });
+
+  const { matchId } = useAuth();
+
   return (
     <div className="w-[60%]">
       <div className="flex flex-col gap-4 w-full max-w-xl">
@@ -11,7 +23,7 @@ const PfName = () => {
           <input
             type="text"
             placeholder="Enter Your First Name"
-            className="w-full px-4 py-2 bg-[#F2F2F2] rounded-md outline-none"
+            className="w-full px-4 py-2 capitalize bg-[#F2F2F2] rounded-md outline-none"
           />
         </div>
         <div>
@@ -21,7 +33,7 @@ const PfName = () => {
           <input
             type="text"
             placeholder="Enter Your Second Name"
-            className="w-full px-4 py-2 bg-[#F2F2F2] rounded-md outline-none"
+            className="w-full px-4 py-2 capitalize bg-[#F2F2F2] rounded-md outline-none"
           />
         </div>
         <div>
@@ -29,7 +41,8 @@ const PfName = () => {
           <input
             type="email"
             placeholder="Enter Email"
-            className="w-full px-4 py-2 bg-[#F2F2F2] rounded-md outline-none"
+            value={matchId?.email}
+            className="w-full px-4 py-2  bg-[#F2F2F2] rounded-md outline-none"
           />
         </div>
         <div>

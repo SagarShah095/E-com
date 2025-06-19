@@ -13,6 +13,8 @@ const PfSection1 = () => {
     { title: "logout" },
   ];
 
+  
+
   const renderSection = () => {
     switch (selected) {
       case "personal information":
@@ -48,7 +50,7 @@ const PfSection1 = () => {
               className={`flex items-center gap-3 p-2 rounded-md cursor-pointer ${
                 selected === item.title
                   ? "text-black"
-                  : "text-[#00000080] hover:bg-gray-100"
+                  : "text-[#00000080]/50 hover:bg-gray-100"
               }`}
             >
               <span className="capitalize font-medium font-poppins">
