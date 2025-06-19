@@ -1,6 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { countryStateData } from "../../../utils/countryStateData";
+import axios from "axios";
 
 const PfAddress = () => {
   const [add, setAdd] = useState({
@@ -17,7 +18,6 @@ const PfAddress = () => {
   });
 
   const { matchId } = useAuth();
-
   const API_URL = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
 
@@ -33,10 +33,13 @@ const PfAddress = () => {
         }
       );
       if (response.data.success) {
-        console.log("Added successful:", response.data);
+        console.log("Address updated successfully:", response.data);
       }
     } catch (error) {
-      console.error("Address failed:", error.response?.data || error.message);
+      console.error(
+        "Address update failed:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -57,39 +60,8 @@ const PfAddress = () => {
     }
   }, [matchId]);
 
-  const indianStates = [
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chhattisgarh",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
-  ];
-
   return (
-    <form className="space-y-6 w-[80%]">
+    <form className="space-y-6 w-[90%]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block mb-1 font-medium">First Name</label>
@@ -100,6 +72,7 @@ const PfAddress = () => {
             className="w-full border bg-[#F2F2F2] focus:outline-none font-medium text-sm rounded-md p-2"
           />
         </div>
+
         <div>
           <label className="block mb-1 font-medium">Second Name</label>
           <input
@@ -160,33 +133,43 @@ const PfAddress = () => {
           />
         </div>
 
-        <div>
-          <label className="block mb-1 font-medium">Select State</label>
-          <select
-            value={add.state}
-            onChange={(e) => setAdd({ ...add, state: e.target.value })}
-            className="w-full bg-[#F2F2F2] focus:outline-none cursor-pointer border font-medium text-sm rounded-md p-2"
-          >
-            <option value="">Select State</option>
-            {indianStates.map((state, index) => (
-              <option key={index} value={state}>
-                {state}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Show state dropdown only if India is selected */}
+        <div className="grid grid-cols-1 gap-4">
+          {add.country && countryStateData[add.country] && (
+            <div>
+              <label className="block mb-1 font-medium">Select State</label>
+              <select
+                value={add.state}
+                onChange={(e) => setAdd({ ...add, state: e.target.value })}
+                className="w-full bg-[#F2F2F2] focus:outline-none cursor-pointer border font-medium text-sm rounded-md p-2"
+              >
+                <option value="">Select State</option>
+                {countryStateData[add.country].map((state, index) => (
+                  <option key={index} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
-        <div>
-          <label className="block mb-1 font-medium">Country</label>
-          <select
-            value={add.country}
-            onChange={(e) => setAdd({ ...add, country: e.target.value })}
-            className="w-full bg-[#F2F2F2] focus:outline-none font-medium text-sm cursor-pointer border rounded-md p-2"
-          >
-            <option value="">Select Country</option>
-            <option value="India">India</option>
-            {/* Add more options */}
-          </select>
+          <div>
+            <label className="block mb-1 font-medium">Country</label>
+            <select
+              value={add.country}
+              onChange={(e) =>
+                setAdd({ ...add, country: e.target.value, state: "" })
+              }
+              className="w-full bg-[#F2F2F2] focus:outline-none font-medium text-sm cursor-pointer border rounded-md p-2"
+            >
+              <option value="">Select Country</option>
+              {Object.keys(countryStateData).map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
