@@ -13,6 +13,7 @@ import ProductVisit from "./ManCategory/ProductVisit";
 import Search from "./Dropdowns/Search";
 import PfDrp from "./Dropdowns/PfDrp";
 import Profile from "./Pages/Clint/Profile";
+import { useEffect } from "react";
 
 const AppContent = () => {
   const [show, setShow] = useState(false);
@@ -22,6 +23,14 @@ const AppContent = () => {
   const location = useLocation();
   const hideNavFooter =
     location.pathname === "/login" || location.pathname === "/signup";
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setProfile(false);
+    }
+  }, [profile]);
 
   return (
     <>
@@ -48,7 +57,10 @@ const AppContent = () => {
           <Route path="/signup" element={<Signup />} />
           {/* Add more routes here */}
         </Routes>
-        {profile && <PfDrp setProfile={setProfile} />}
+        {profile && localStorage.getItem("token") && (
+          <PfDrp setProfile={setProfile} />
+        )}
+
         {show && <ManDrp setShow={setShow} />}
         {search && <Search setSearch={setSearch} />}
       </div>

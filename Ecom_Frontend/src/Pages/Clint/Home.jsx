@@ -7,6 +7,9 @@ import Brands from "../../Components/Client/Home/Brands";
 import Comment from "../../Components/Client/Home/Comment";
 
 const Home = () => {
+
+  
+
   return (
     <div className="bg-[#F5F5F5] pt-28">
       <Banner />

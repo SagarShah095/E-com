@@ -1,4 +1,3 @@
-// context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
@@ -8,9 +7,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [data, setData] = useState([]);
+  const [matchId, setMatchId] = useState(null); // ✅ Store match result
 
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // console.log(data, "datatatata");
+
+  // ✅ Verify token and user
   const verifyUser = async () => {
     const token = localStorage.getItem("token");
 
@@ -23,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      setUser(response.data.user); // ✅ Make sure this is correct
+      setUser(response.data.user);
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Verification failed:", error);
@@ -31,30 +34,48 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const storedUser = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/auth/getuser`);
-        setData(response?.data?.data);
-      } catch (error) {
-        console.log(error, "error in Home");
-      }
-    };
-    // if (storedUser) {
-    //   setUser();
-    // }
-    storedUser();
-  }, []);
+  // ✅ Fetch all user data
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/auth/getuser`);
+      setData(response?.data?.data || []);
+    } catch (error) {
+      console.log("Error in fetching users:", error);
+    }
+  };
 
   useEffect(() => {
-    verifyUser(); // ✅ Call it once on app load
+    fetchUsers();
+    verifyUser();
   }, []);
 
-  const matchId = data.find((item) => item._id === user.id);
+  const refreshAuth = async () => {
+    await verifyUser();
+    await fetchUsers();
+  };
+
+  // console.log(user,"USerUSer")
+
+  // ✅ Set matchId only when both user and data are available
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (user && data.length > 0) {
+      const match = data.find((item) => item._id === user.id);
+      setMatchId(match);
+    }
+  }, [data]);
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, isAuthenticated, setIsAuthenticated, matchId }}
+      value={{
+        user,
+        setUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        matchId,
+        refreshAuth,
+      }}
     >
       {children}
     </AuthContext.Provider>

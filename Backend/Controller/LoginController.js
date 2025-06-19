@@ -4,7 +4,15 @@ const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 
 const register = async (req, res) => {
-  const { username, email, password, firstname, secondname, phonenumber, gender, } = req.body;
+  const {
+    username,
+    email,
+    password,
+    firstname,
+    secondname,
+    phonenumber,
+    gender,
+  } = req.body;
   try {
     const exsitingUser = await User.findOne({ email });
     if (exsitingUser)
@@ -153,7 +161,7 @@ const updatePass = async (req, res) => {
 };
 
 const PersonalInfo = async (req, res) => {
-  const { firstname, secondname, gender, email, phonenumber, _id } = req.body;
+  const { firstname, secondname, gender, phonenumber, _id } = req.body;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -162,7 +170,6 @@ const PersonalInfo = async (req, res) => {
         firstname,
         secondname,
         gender,
-        email,
         phonenumber,
       },
       { new: true } // returns updated document
@@ -178,6 +185,57 @@ const PersonalInfo = async (req, res) => {
       success: true,
       message: "Personal information updated successfully",
       data: updatedUser,
+    });
+  } catch (error) {
+    console.error("Update failed:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating personal info",
+    });
+  }
+};
+
+const AddressAdd = async (req, res) => {
+  const {
+    addfname,
+    addsname,
+    addpnumber,
+    address,
+    address2,
+    pincode,
+    city,
+    state,
+    country,
+    _id,
+  } = req.body;
+
+  try {
+    const updateAddress = await User.findByIdAndUpdate(
+      _id,
+      {
+        addfname,
+        addsname,
+        addpnumber,
+        address,
+        address2,
+        pincode,
+        city,
+        state,
+        country,
+      },
+      { new: true } // returns updated document
+    );
+
+    if (!updateAddress) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Personal information updated successfully",
+      data: updateAddress,
     });
   } catch (error) {
     console.error("Update failed:", error);
@@ -212,4 +270,5 @@ module.exports = {
   verifyUser,
   getlogData,
   PersonalInfo,
+  AddressAdd,
 };

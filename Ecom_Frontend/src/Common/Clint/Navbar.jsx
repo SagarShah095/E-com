@@ -1,11 +1,21 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { CgSearch } from "react-icons/cg";
 import { GoPerson } from "react-icons/go";
 import { IoBagOutline } from "react-icons/io5";
 import PfDrp from "../../Dropdowns/PfDrp";
 
 const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+  const handleProfileClick = () => {
+    if (!token) {
+      navigate("/login");
+    } else {
+      navigate("/profile");
+    }
+  };
   return (
     <div className="fixed w-full z-50">
       <div className="font-poppins p-2 bg-[#F5F5F5]">
@@ -48,8 +58,8 @@ const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
           </NavLink>
 
           {/* ✅ Profile icon + dropdown wrapper */}
-          <NavLink
-            to="/profile"
+          <div
+            onClick={handleProfileClick}
             className="relative hover:bg-[#F5F5F5] p-2 rounded-full duration-300 cursor-pointer"
             onMouseEnter={() => setProfile(true)}
             onMouseLeave={() => setProfile(false)}
@@ -60,7 +70,7 @@ const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
                 <PfDrp />
               </div>
             )} */}
-          </NavLink>
+          </div>
 
           {/* Cart Icon */}
           <NavLink className="hover:bg-[#F5F5F5] p-2 rounded-full duration-300">

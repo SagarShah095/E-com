@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import PfName from "./PfName";
 import PfOrders from "./PfOrder";
 import PfAddress from "./PfAddress";
+import { useAuth } from "../../../context/AuthContext";
 
 const PfSection1 = () => {
-  const [selected, setSelected] = useState("personal information");
+  const [selected, setSelected] = useState(
+    localStorage.getItem("profileTab") || "personal information"
+  );
 
   const data = [
     { title: "personal information" },
@@ -13,7 +16,7 @@ const PfSection1 = () => {
     { title: "logout" },
   ];
 
-  
+  const { matchId } = useAuth();
 
   const renderSection = () => {
     switch (selected) {
@@ -31,22 +34,27 @@ const PfSection1 = () => {
     }
   };
 
+  const handleTabClick = (title) => {
+    setSelected(title);
+    localStorage.setItem("profileTab", title);
+  };
+
   return (
     <div className="flex gap-10 p-10">
       {/* Sidebar */}
       <div className="w-1/3 border-r pr-8">
         <h1 className="font-poppins font-semibold text-2xl uppercase mb-2">
-          Akshay Dholakiya
+          {matchId?.username}
         </h1>
         <p className="lowercase font-poppins font-medium bg-[#F2F2F2] p-3 rounded-md mb-6">
-          akshay2004vbi@gmail.com
+          {matchId?.email}
         </p>
 
         <div className="flex flex-col gap-3">
           {data.map((item, i) => (
             <div
               key={i}
-              onClick={() => setSelected(item.title)}
+              onClick={() => handleTabClick(item.title)}
               className={`flex items-center gap-3 p-2 rounded-md cursor-pointer ${
                 selected === item.title
                   ? "text-black"

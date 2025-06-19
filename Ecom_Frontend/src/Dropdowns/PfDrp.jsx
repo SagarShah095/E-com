@@ -29,11 +29,6 @@ const PfDrp = ({ setProfile }) => {
       icon2: <FaAngleRight />,
     },
     {
-      icon: <BiHeart className="w-6 h-6" />,
-      title: "my wishlist",
-      icon2: <FaAngleRight />,
-    },
-    {
       icon: <MdNotificationsNone className="w-6 h-6" />,
       title: "notification",
       icon2: <FaAngleRight />,

@@ -5,11 +5,13 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const { refreshAuth } = useAuth();
 
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -35,7 +37,7 @@ const Login = () => {
         // ✅ Save to localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-
+        await refreshAuth();
         navigate("/");
       } else {
         console.log("Login failed");
