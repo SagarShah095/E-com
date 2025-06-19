@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PfName from "./PfName";
 import PfOrders from "./PfOrder";
+import PfAddress from "./PfAddress";
 
 const PfSection1 = () => {
   const [selected, setSelected] = useState("personal information");
@@ -9,8 +10,7 @@ const PfSection1 = () => {
     { title: "personal information" },
     { title: "my order" },
     { title: "my address" },
-    { title: "my wishlist" },
-    { title: "notification" },
+    { title: "logout" },
   ];
 
   const renderSection = () => {
@@ -18,13 +18,12 @@ const PfSection1 = () => {
       case "personal information":
         return <PfName />;
       case "my order":
-        return <PfOrders/>;
+        return <PfOrders />;
       case "my address":
-        return <div>Address Component Here</div>;
-      case "my wishlist":
+        return <PfAddress />;
+      case "logout":
         return <div>Wishlist Component Here</div>;
-      case "notification":
-        return <div>Notification Component Here</div>;
+
       default:
         return null;
     }
