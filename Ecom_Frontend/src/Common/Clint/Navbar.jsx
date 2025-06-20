@@ -5,7 +5,7 @@ import { GoPerson } from "react-icons/go";
 import { IoBagOutline } from "react-icons/io5";
 import PfDrp from "../../Dropdowns/PfDrp";
 
-const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
+const Navbar = ({ setShow, setSearch, setProfile, profile, setCart, cart }) => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -16,6 +16,16 @@ const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
       navigate("/profile");
     }
   };
+
+  const handleCart = () => {
+    if (!token) {
+      setCart(false);
+      return navigate("/login");
+    }
+    setCart(true);
+  };
+
+  console.log(cart, "cart123");
   return (
     <div className="fixed w-full z-50">
       <div className="font-poppins p-2 bg-[#F5F5F5]">
@@ -65,17 +75,15 @@ const Navbar = ({ setShow, setSearch, setProfile, profile }) => {
             onMouseLeave={() => setProfile(false)}
           >
             <GoPerson className="h-full w-5" />
-            {/* {profile && (
-              <div className="absolute top-full right-0 z-50">
-                <PfDrp />
-              </div>
-            )} */}
           </div>
 
           {/* Cart Icon */}
-          <NavLink className="hover:bg-[#F5F5F5] p-2 rounded-full duration-300">
+          <div
+            className="hover:bg-[#F5F5F5] p-2 rounded-full cursor-pointer  duration-300"
+            onClick={handleCart}
+          >
             <IoBagOutline className="h-full w-5" />
-          </NavLink>
+          </div>
         </div>
       </div>
     </div>

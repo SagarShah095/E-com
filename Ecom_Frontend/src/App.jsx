@@ -14,15 +14,22 @@ import Search from "./Dropdowns/Search";
 import PfDrp from "./Dropdowns/PfDrp";
 import Profile from "./Pages/Clint/Profile";
 import { useEffect } from "react";
+import WishRightbar from "./Dropdowns/WishRightbar";
+import ForgotPass from "./Shared/ForgotPass";
+import ReserPass from "./Shared/ReserPass";
 
 const AppContent = () => {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [cart, setCart] = useState(false);
 
   const location = useLocation();
   const hideNavFooter =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/reset-password";
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -42,11 +49,15 @@ const AppContent = () => {
             setSearch={setSearch}
             profile={profile}
             setProfile={setProfile}
+            setCart={setCart}
+            cart={cart}
           />
         )}
 
         <Routes className={``}>
           <Route path="/" element={<Home setShow={setShow} show={show} />} />
+          <Route path="/forgot-password" element={<ForgotPass />} />
+          <Route path="/reset-password" element={<ReserPass />} />
           <Route path="/mens-collection" element={<ManCollection />} />
           <Route path="/new-arival" element={<NewArival />} />
           <Route path="/sale" element={<Sales />} />
@@ -61,6 +72,9 @@ const AppContent = () => {
           <PfDrp setProfile={setProfile} />
         )}
 
+        {cart && localStorage.getItem("token") && (
+          <WishRightbar setCart={setCart} />
+        )}
         {show && <ManDrp setShow={setShow} />}
         {search && <Search setSearch={setSearch} />}
       </div>

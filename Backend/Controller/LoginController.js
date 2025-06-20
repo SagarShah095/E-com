@@ -2,6 +2,7 @@ const User = require("../Model/LoginModal");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
+const nodemailer = require("nodemailer");
 
 const register = async (req, res) => {
   const {
@@ -64,6 +65,82 @@ const register = async (req, res) => {
     res.status(201).json({ message: "User registered and email sent!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+const transporter = nodemailer.createTransport({
+  service: "gmail", // Or your email service (e.g. "hotmail", "yahoo")
+  auth: {
+    user: process.env.EMAIL_USER, // your email address
+    pass: process.env.EMAIL_PASS, // your app password
+  },
+});
+
+console.log("User:", process.env.EMAIL_USER);
+console.log("Pass:", process.env.EMAIL_PASS);
+
+const SendOTP = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "Email not found" });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save OTP to user document
+    user.otp = otp;
+    user.otpExpire = Date.now() + 10 * 60 * 1000; // 10 mins
+    await user.save();
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your OTP for Password Reset",
+      text: `Your OTP is: ${otp}`,
+    });
+
+    res
+      .status(201)
+      .json({ success: true, message: "OTP send successfully", otp: otp });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user || user.otp !== otp || Date.now() > user.otpExpire) {
+      return res.json({ success: false, message: "Invalid or expired OTP" });
+    }
+
+    // Clear OTP after successful verification
+    user.otp = null;
+    user.otpExpire = null;
+    await user.save();
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
+  }
+};
+
+
+const resetPass = async (req, res) => {
+  const { userId, password } = req.body;
+
+  try {
+    const hashed = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(userId, { password: hashed });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
   }
 };
 
@@ -271,4 +348,7 @@ module.exports = {
   getlogData,
   PersonalInfo,
   AddressAdd,
+  SendOTP,
+  verifyOtp,
+  resetPass,
 };

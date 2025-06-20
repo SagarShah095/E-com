@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const AddSchema = new mongoose.Schema({
+  user_id: { type: String, require: true },
   img: { type: String, require: true },
   prdName: { type: String, require: true },
   prdCategory: { type: String, require: true },
@@ -10,7 +11,7 @@ const AddSchema = new mongoose.Schema({
   overview: { type: String, require: true },
   material: { type: String },
   color: { type: String, require: true },
-  whitelist: { type: Boolean },
+  whitelist: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("AddProduct", AddSchema);

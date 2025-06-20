@@ -15,6 +15,6 @@ router.get("/getPoduct", getPrd);
 router.get("/:id", getSinglePrd);
 router.put("/updStock", updateStock);
 router.delete("/dltPrd", deletePrd);
-router.post("/whitelist", whitelist);
+router.put("/whitelist", whitelist);
 
 module.exports = router;

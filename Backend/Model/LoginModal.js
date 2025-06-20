@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
+  otp: { type: String },
+  otpExpire: { type: Date },
   username: { type: String, require: true },
   firstname: { type: String, require: false },
   secondname: { type: String, require: false },
   phonenumber: { type: Number, require: false },
-  gender: { type: String, enum: ["men", "women"], require: false },
-  email: { type: String, require: true },
+  gender: { type: String, enum: ["male", "female"], require: false },
+  email: { type: String, required: true, unique: true },
   password: { type: String, require: true },
   addfname: { type: String, require: false },
   addsname: { type: String, require: false },
