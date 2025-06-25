@@ -35,9 +35,9 @@ const Navbar = ({ setShow, setSearch, setProfile, profile, setCart, cart }) => {
       </div>
       <div className="bg-white flex justify-evenly p-4 items-center">
         <div>
-          <h1 className="text-4xl uppercase font-poppins font-semibold">
+          <NavLink to="/" className="text-4xl uppercase font-poppins font-semibold">
             LaceUp
-          </h1>
+          </NavLink>
         </div>
 
         <div className="uppercase flex w-[55%] justify-evenly font-poppins font-medium">

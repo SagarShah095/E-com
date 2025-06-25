@@ -17,6 +17,8 @@ import { useEffect } from "react";
 import WishRightbar from "./Dropdowns/WishRightbar";
 import ForgotPass from "./Shared/ForgotPass";
 import ReserPass from "./Shared/ReserPass";
+import Sidebar from "./Common/Admin/Sidebar";
+import Revenue from "./Components/Admin/Dashboard/Revenue";
 
 const AppContent = () => {
   const [show, setShow] = useState(false);
@@ -29,7 +31,9 @@ const AppContent = () => {
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname === "/forgot-password" ||
-    location.pathname === "/reset-password";
+    location.pathname === "/reset-password" ||
+    location.pathname.startsWith("/admin");
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -54,7 +58,12 @@ const AppContent = () => {
           />
         )}
 
+        {location.pathname.startsWith("/admin") && <Sidebar />}
+
         <Routes className={``}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
           <Route path="/" element={<Home setShow={setShow} show={show} />} />
           <Route path="/forgot-password" element={<ForgotPass />} />
           <Route path="/reset-password" element={<ReserPass />} />
@@ -64,9 +73,8 @@ const AppContent = () => {
           <Route path="/product-shoes" element={<ProductVisit />} />
           <Route path="/profile" element={<Profile />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          {/* Add more routes here */}
+          {/* Admin Routes */}
+          {/* <Route path="/admin-dashboard" element={<Sidebar />} /> */}
         </Routes>
         {profile && localStorage.getItem("token") && (
           <PfDrp setProfile={setProfile} />

@@ -11,7 +11,7 @@ const Login = () => {
     password: "",
   });
 
-  const { refreshAuth } = useAuth();
+  const { refreshAuth, matchId } = useAuth();
 
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -33,12 +33,17 @@ const Login = () => {
 
       if (response?.status === 201) {
         const token = response.data.token;
-
-        // ✅ Save to localStorage
+        const user = response.data.user;
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(user));
+
         await refreshAuth();
-        navigate("/");
+
+        if (matchId.role === "admin") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/");
+        }
       } else {
         console.log("Login failed");
       }
