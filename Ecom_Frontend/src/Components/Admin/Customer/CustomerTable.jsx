@@ -59,6 +59,60 @@ const products = [
     price: "₹4999",
     status: "Active",
   },
+  {
+    id: 7,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
+  {
+    id: 8,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
+  {
+    id: 9,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
+  {
+    id: 10,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
+  {
+    id: 11,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
+  {
+    id: 12,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "User123",
+    email: "User123@gmail.com",
+    pno: "XXXXXXXX9",
+    price: "₹4999",
+    status: "Active",
+  },
 ];
 
 const CustomerTable = ({ setSide, setOpen }) => {
@@ -161,7 +215,9 @@ const CustomerTable = ({ setSide, setOpen }) => {
                 <td className="px-4 py-3">{item.pno}</td>
                 <td className="px-4 py-3">{item.price}</td>
                 <td className="px-4 py-3 text-center">
-                  <div className="bg-black p-2 text-white rounded-md">{item.status}</div>
+                  <div className="bg-black p-2 text-white rounded-md">
+                    {item.status}
+                  </div>
                 </td>
 
                 <td className="px-4 py-3">

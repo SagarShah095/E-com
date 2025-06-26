@@ -5,6 +5,7 @@ import Dashboard from "../../Pages/Admin/AdminPages/Dashboard";
 import Product from "../../Pages/Admin/AdminPages/Product";
 import Order from "../../Pages/Admin/AdminPages/Order";
 import Customer from "../../Pages/Admin/AdminPages/Customer";
+import Categories from "../../Pages/Admin/AdminPages/Categories";
 
 // Optional: You can customize this
 const PageHeader = () => {
@@ -19,8 +20,8 @@ const PageHeader = () => {
     ),
     "/admin/dashboard": <Dashboard />,
     "/admin/order": <Order />,
-    "/admin/customer": <Customer/>,
-    "/admin/categories": "Product Categories",
+    "/admin/customer": <Customer />,
+    "/admin/categories": <Categories />,
     "/admin/notification": "Notifications",
   };
 

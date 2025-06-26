@@ -1,112 +1,21 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { FiDownload, FiTrash } from "react-icons/fi";
-import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
+import { FiTrash } from "react-icons/fi";
+import { RiPencilLine, RiRefund2Line } from "react-icons/ri";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { LuArrowUpDown } from "react-icons/lu";
-import { RiRefund2Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const products = [
   {
-    id: "ORD123456",
-    customer: "Rahul Mehta",
-    email: "rahul.mehta@gmail.com",
-    date: "25/JUN/2025",
-    items: 3,
-    total: "₹5,499",
-    paymentStatus: "Paid",
-    status: "Shipped",
-  },
-  {
-    id: "ORD123457",
-    customer: "Pooja Sharma",
-    email: "pooja.sharma123@gmail.com",
-    date: "24/JUN/2025",
-    items: 2,
-    total: "₹3,199",
-    paymentStatus: "Pending",
-    status: "Processing",
-  },
-  {
-    id: "ORD123458",
-    customer: "Ankit Patel",
-    email: "ankit.patel@gmail.com",
-    date: "23/JUN/2025",
-    items: 5,
-    total: "₹9,899",
+    id: "#001",
+    customer: "asdas",
+    email: "test@gmail.com",
+    date: "23/7/2005",
+    items: "shoes",
+    total: 121,
     paymentStatus: "Paid",
     status: "Delivered",
-  },
-  {
-    id: "ORD123459",
-    customer: "Sneha Iyer",
-    email: "sneha.iyer22@gmail.com",
-    date: "22/JUN/2025",
-    items: 1,
-    total: "₹1,299",
-    paymentStatus: "Refund",
-    status: "Cancelled",
-  },
-  {
-    id: "ORD123460",
-    customer: "Rohan Desai",
-    email: "rohandesai99@gmail.com",
-    date: "20/JUN/2025",
-    items: 4,
-    total: "₹7,450",
-    paymentStatus: "Paid",
-    status: "Delivered",
-  },
-  {
-    id: "ORD123461",
-    customer: "Neha Singh",
-    email: "neha.singh@gmail.com",
-    date: "19/JUN/2025",
-    items: 2,
-    total: "₹2,850",
-    paymentStatus: "Refunded",
-    status: "Returned",
-  },
-  {
-    id: "ORD123462",
-    customer: "Aman Jain",
-    email: "aman.jain123@gmail.com",
-    date: "18/JUN/2025",
-    items: 3,
-    total: "₹4,799",
-    paymentStatus: "Paid",
-    status: "Shipped",
-  },
-  {
-    id: "ORD123463",
-    customer: "Disha Shah",
-    email: "disha.shah07@gmail.com",
-    date: "17/JUN/2025",
-    items: 1,
-    total: "₹1,199",
-    paymentStatus: "Pending",
-    status: "Processing",
-  },
-  {
-    id: "ORD123464",
-    customer: "Kunal Verma",
-    email: "kunal.verma02@gmail.com",
-    date: "16/JUN/2025",
-    items: 6,
-    total: "₹11,599",
-    paymentStatus: "Paid",
-    status: "Delivered",
-  },
-  {
-    id: "ORD123465",
-    customer: "Priya Joshi",
-    email: "priya.joshi555@gmail.com",
-    date: "15/JUN/2025",
-    items: 2,
-    total: "₹3,299",
-    paymentStatus: "Refund",
-    status: "Cancelled",
   },
 ];
 
@@ -114,65 +23,52 @@ const OrderTable = ({ setIsOpen }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Pagination logic
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = products.slice(startIndex, startIndex + itemsPerPage);
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
+  const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const handleNext = () =>
+    currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePageClick = (number) => setCurrentPage(number);
 
   return (
-    <div>
-      <div className="flex flex-col mt-5 md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <h1 className="font-poppins uppercase font-semibold my-3">ORDER</h1>
-        {/* Search Bar */}
-
-        {/* Buttons */}
-        <div className="flex items-center gap-3">
-          <button
+    <div className="w-full font-poppins">
+      {/* Header */}
+      <div className="flex flex-col  md:flex-row md:items-center md:justify-between w-full mx-auto mt-5 gap-4">
+        <h1 className="font-poppins uppercase font-semibold">Order</h1>
+        <button
           onClick={() => setIsOpen(true)}
-          className="bg-black cursor-pointer text-white font-poppins font-medium uppercase px-4 py-3 rounded-md text-sm flex items-center gap-2">
-            <FaPlus className="text-sm" /> NEW Order
-          </button>
-        </div>
+          className="bg-black text-white font-poppins font-medium uppercase px-4 py-3 rounded-md text-sm flex items-center gap-2"
+        >
+          <FaPlus className="text-sm" /> New Order
+        </button>
       </div>
-      <div className="bg-white p-6 overflow-y-scroll max-h-screen scrollbar-hide rounded-md shadow-md w-full overflow-x-auto">
-        {/* Top Bar */}
 
-        {/* Table */}
-        <table className="min-w-full table-auto font-poppins">
+      {/* Table Wrapper */}
+      <div className="bg-white w-[95%] mx-auto mt-4 p-4 rounded-md shadow-md overflow-x-auto max-h-[80vh]">
+        <table className="w-full min-w-fit table-auto font-poppins">
           <thead>
-            <tr className="text-left text-xs uppercase font-semibold font-poppins bg-gray-50 border-y">
+            <tr className="text-left text-xs uppercase font-semibold bg-gray-50 border-y">
               <th className="px-4 py-3">
                 <input
                   type="checkbox"
                   className="accent-black cursor-pointer"
                 />
               </th>
-              <th className="px-4 py-3">Order Id</th>
-              <th className="px-4 py-3">CUSTOMER</th>
-              <th className="px-4 py-3">DATE</th>
-              <th className="px-4 py-3">ITEMS</th>
-              <th className="px-4 py-3">TOTAL</th>
-              <th className="px-4 py-3">PAYMENT STATUS</th>
-              <th className="px-4 py-3">STATUS</th>
-              <th className="px-4 py-3">ACTIONS</th>
+              <th className="px-4 py-3">Order ID</th>
+              <th className="px-4 py-3">Customer</th>
+              <th className="px-4 py-3">Date</th>
+              <th className="px-4 py-3">Items</th>
+              <th className="px-4 py-3">Total</th>
+              <th className="px-4 py-3">Payment Status</th>
+              <th className="px-4 py-3 text-center">Status</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((order) => (
-              <tr
-                key={order.id}
-                className="border-b text-sm font-poppins hover:bg-gray-50"
-              >
+              <tr key={order.id} className="border-b text-sm hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <input
                     type="checkbox"
@@ -183,41 +79,41 @@ const OrderTable = ({ setIsOpen }) => {
                 <td className="px-4 py-3">
                   <div>
                     <div className="font-medium">{order.customer}</div>
-                    <div className="text-xs ">{order.email}</div>
+                    <div className="text-xs text-gray-500">{order.email}</div>
                   </div>
                 </td>
-                <td className="whitespace-nowrap">{order.date}</td>
+                <td className="px-4 py-3 whitespace-nowrap">{order.date}</td>
                 <td className="px-4 py-3">{order.items}</td>
                 <td className="px-4 py-3">{order.total}</td>
                 <td className="px-4 py-3">
-                  <div
-                    className={`bg-black  text-center p-1 rounded-md py-2 ${
-                      order.paymentStatus === "Pending"
+                  <span
+                    className={`block px-2 py-1 rounded-md text-center text-sm font-medium ${
+                      order.paymentStatus === "Paid"
+                        ? "bg-black text-white"
+                        : order.paymentStatus === "Pending"
                         ? "bg-white text-black border border-black"
-                        : "text-white"
-                    } ${
-                      order.paymentStatus === "Refund"
-                        ? "bg-white text-[#FF0000] border border-[#FF0000]"
-                        : ""
+                        : order.paymentStatus === "Refund"
+                        ? "bg-white text-red-700"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
                     {order.paymentStatus}
-                  </div>
+                  </span>
                 </td>
                 <td className="px-4 py-3">
-                  <div
-                    className={`bg-black  text-center p-1 rounded-md py-2 ${
-                      order.status === "Processing"
+                  <span
+                    className={`block px-2 py-1 rounded-md text-center text-sm font-medium ${
+                      order.status === "Delivered"
+                        ? "bg-black text-white"
+                        : order.status === "Processing"
                         ? "bg-white text-black border border-black"
-                        : "text-white"
-                    } ${
-                      order.status === "Cancelled"
-                        ? "bg-white text-[#FF0000] border border-[#FF0000]"
-                        : ""
+                        : order.status === "Cancelled"
+                        ? "bg-white text-red-700"
+                        : "bg-gray-100 text-gray-800"
                     }`}
                   >
                     {order.status}
-                  </div>
+                  </span>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
@@ -232,12 +128,12 @@ const OrderTable = ({ setIsOpen }) => {
           </tbody>
         </table>
 
-        {/* Pagination Footer */}
+        {/* Pagination */}
         <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
           <p className="text-black font-medium">
-            SHOWING {startIndex + 1} TO{" "}
-            {Math.min(startIndex + itemsPerPage, products.length)} OF{" "}
-            {products.length} PRODUCTS
+            Showing {startIndex + 1} to{" "}
+            {Math.min(startIndex + itemsPerPage, products.length)} of{" "}
+            {products.length} Orders
           </p>
 
           <div className="flex items-center gap-1">
