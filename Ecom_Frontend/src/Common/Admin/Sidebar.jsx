@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoPerson } from "react-icons/go";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 import Dashboard from "../../Pages/Admin/AdminPages/Dashboard";
 import Product from "../../Pages/Admin/AdminPages/Product";
 import Order from "../../Pages/Admin/AdminPages/Order";
@@ -33,6 +33,8 @@ const PageHeader = () => {
 };
 
 const Sidebar = () => {
+  const navigate = useNavigate() 
+
   const location = useLocation();
 
   const menuItems = [
@@ -43,6 +45,11 @@ const Sidebar = () => {
     { name: "CATEGORIES", path: "/admin/categories" },
     { name: "NOTIFICATION", path: "/admin/notification" },
   ];
+
+  const handleLogout = () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+  };
 
   return (
     <div className="flex bg-[#FAFAFA] relative min-h-screen">
@@ -78,7 +85,7 @@ const Sidebar = () => {
         {/* Logout */}
         <div className="px-6 pb-6">
           <button
-            onClick={() => alert("Logging out...")}
+            onClick={handleLogout}
             className="font-semibold font-poppins text-lg py-2 px-3 rounded-md transition hover:bg-gray-100 text-black"
           >
             LOGOUT
