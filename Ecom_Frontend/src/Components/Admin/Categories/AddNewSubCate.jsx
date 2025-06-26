@@ -4,7 +4,7 @@ import Select from "react-select";
 import { FaTrash } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 
-const AddNewCategory = ({setCate}) => {
+const AddNewSubCate = ({setSubCate}) => {
   return (
     <div
       className={
@@ -16,21 +16,21 @@ const AddNewCategory = ({setCate}) => {
     >
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="font-poppins font-semibold text-lg">Add New Category</h1>
+          <h1 className="font-poppins font-semibold text-lg">Add New Subcategory</h1>
           <RxCross2
             className="text-2xl cursor-pointer"
-            onClick={() => setCate(false)}
+            onClick={() => setSubCate(false)}
           />
         </div>
         <div className="flex flex-col justify-between h-[90vh]">
           <div className="mt-3 space-y-4">
             {/* Product Name */}
             <div>
-              <h1 className="font-poppins text-sm uppercase">Category Name</h1>
+              <h1 className="font-poppins text-sm uppercase">Subcategory Name</h1>
               <input
                 type="dropdown"
                 className="placeholder:capitalize cursor-pointer font-poppins mt-2 uppercase w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
-                placeholder="Enter Category name"
+                placeholder="Enter Subcategory name"
               />
             </div>
 
@@ -40,14 +40,14 @@ const AddNewCategory = ({setCate}) => {
               <textarea
                 rows={6}
                 type="date"
-                placeholder="Enter category description"
+                placeholder="Enter Subcategory description"
                 className="w-full uppercase mt-2 font-poppins placeholder:capitalize text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
               />
             </div>
 
             {/* Category and Subcategory */}
             <div>
-              <h1 className="font-poppins text-sm uppercase">Category Image</h1>
+              <h1 className="font-poppins text-sm uppercase">Subcategory Image</h1>
               <div className="h-fit  rounded-md mt-2">
                 <input
                   type="file"
@@ -86,4 +86,4 @@ const AddNewCategory = ({setCate}) => {
   );
 };
 
-export default AddNewCategory;
+export default AddNewSubCate;

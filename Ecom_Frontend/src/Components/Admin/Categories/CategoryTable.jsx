@@ -167,7 +167,7 @@ const products = [
   },
 ];
 
-const CategoryTable = ({ setCate }) => {
+const CategoryTable = ({ setCate, setSubCate }) => {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || "category";
   });
@@ -183,6 +183,9 @@ const CategoryTable = ({ setCate }) => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem("activeTab", tab);
+    // {
+    //   activeTab === 'category' ? setCate(true) : setCate(false)
+    // }
   };
 
   const handlePrev = () => {
@@ -223,7 +226,13 @@ const CategoryTable = ({ setCate }) => {
         </div>
         <div>
           <button
-            onClick={() => setSide(true)}
+            onClick={() => {
+              if (activeTab === "category") {
+                setCate(true);
+              } else {
+                setSubCate(true);
+              }
+            }}
             className="bg-black cursor-pointer text-white font-poppins font-medium uppercase p-3 rounded-md text-sm flex items-center gap-2"
           >
             <FaPlus className="text-sm" /> NEW{" "}
