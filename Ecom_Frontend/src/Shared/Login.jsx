@@ -40,7 +40,7 @@ const Login = () => {
         await refreshAuth();
 
         if (matchId.role === "admin") {
-          navigate("/admin-dashboard");
+          navigate("/admin/dashboard");
         } else {
           navigate("/");
         }

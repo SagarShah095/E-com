@@ -1,9 +1,7 @@
-import React from "react";
-import { FaSearch, FaPlus, FaPen, FaTrash } from "react-icons/fa";
-import { FiDownload } from "react-icons/fi";
-import { RiSearch2Line } from "react-icons/ri";
-import { RiPencilLine } from "react-icons/ri";
-import { FiTrash } from "react-icons/fi";
+import React, { useState } from "react";
+import { FaPlus } from "react-icons/fa";
+import { FiDownload, FiTrash } from "react-icons/fi";
+import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
 
 const products = [
   {
@@ -17,46 +15,176 @@ const products = [
   {
     id: 2,
     image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
-    category: "CASUAL",
-    stock: 220,
-    price: "₹4999",
+    name: "Adidas UltraBoost",
+    category: "SPORT",
+    stock: 150,
+    price: "₹6999",
   },
   {
     id: 3,
     image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
-    category: "HEELS",
-    stock: 220,
-    price: "₹4999",
+    name: "Puma RS-X",
+    category: "CASUAL",
+    stock: 120,
+    price: "₹5999",
   },
   {
     id: 4,
     image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
-    category: "BOOTS",
-    stock: 220,
-    price: "₹4999",
+    name: "Reebok Classic",
+    category: "CASUAL",
+    stock: 80,
+    price: "₹3499",
   },
   {
     id: 5,
     image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
+    name: "Bata Leather Boots",
     category: "BOOTS",
-    stock: 220,
-    price: "₹4999",
+    stock: 70,
+    price: "₹3999",
   },
   {
     id: 6,
     image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
+    name: "Woodland Trekker",
     category: "BOOTS",
-    stock: 220,
+    stock: 60,
     price: "₹4999",
+  },
+  {
+    id: 7,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Sketchers Walk",
+    category: "WALKING",
+    stock: 130,
+    price: "₹2999",
+  },
+  {
+    id: 8,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Converse All Star",
+    category: "CASUAL",
+    stock: 90,
+    price: "₹2899",
+  },
+  {
+    id: 9,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Nike Air Max",
+    category: "SPORT",
+    stock: 110,
+    price: "₹7599",
+  },
+  {
+    id: 10,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Fila Everyday",
+    category: "CASUAL",
+    stock: 140,
+    price: "₹1999",
+  },
+  {
+    id: 11,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Lancer QuickRun",
+    category: "SPORT",
+    stock: 180,
+    price: "₹1599",
+  },
+  {
+    id: 12,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Liberty Formal",
+    category: "FORMAL",
+    stock: 60,
+    price: "₹3999",
+  },
+  {
+    id: 13,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Nike Jordan High",
+    category: "SPORT",
+    stock: 40,
+    price: "₹8999",
+  },
+  {
+    id: 14,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Zara Stylish Heels",
+    category: "HEELS",
+    stock: 70,
+    price: "₹4499",
+  },
+  {
+    id: 15,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Gucci Leather",
+    category: "FORMAL",
+    stock: 30,
+    price: "₹10999",
+  },
+  {
+    id: 16,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Crocs Comfort",
+    category: "SANDALS",
+    stock: 200,
+    price: "₹2499",
+  },
+  {
+    id: 17,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "HRX Sprint",
+    category: "RUNNING",
+    stock: 100,
+    price: "₹3799",
+  },
+  {
+    id: 18,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Adidas Predator",
+    category: "SPORT",
+    stock: 95,
+    price: "₹6799",
+  },
+  {
+    id: 19,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "Campus Bold",
+    category: "CASUAL",
+    stock: 150,
+    price: "₹1499",
+  },
+  {
+    id: 20,
+    image: "/assets/Admin/Dashboard/product.png",
+    name: "RedTape Elite",
+    category: "FORMAL",
+    stock: 85,
+    price: "₹5599",
   },
 ];
 
 const ProductTable = ({ setSide, setOpen }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Pagination logic
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = products.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageClick = (number) => setCurrentPage(number);
+
   return (
     <div>
       <h1 className="font-poppins uppercase font-semibold my-3">PRODUCT</h1>
@@ -65,7 +193,7 @@ const ProductTable = ({ setSide, setOpen }) => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
           {/* Search Bar */}
           <div className="flex items-center gap-2 bg-gray-100 px-4 py-3 rounded-md w-full md:w-1/3">
-            <RiSearch2Line className=" text-lg" />
+            <RiSearch2Line className="text-lg" />
             <input
               type="text"
               placeholder="What are you looking for today ?"
@@ -82,8 +210,9 @@ const ProductTable = ({ setSide, setOpen }) => {
               <FaPlus className="text-sm" /> NEW PRODUCT
             </button>
             <button
-            onClick={() => setOpen(true)}
-            className="border border-[#00000029] text-[#00000080] font-poppins font-medium uppercase px-4 py-3 rounded-md text-sm flex items-center gap-2">
+              onClick={() => setOpen(true)}
+              className="border border-[#00000029] text-[#00000080] font-poppins font-medium uppercase px-4 py-3 rounded-md text-sm flex items-center gap-2"
+            >
               <FiDownload className="text-base text-[#00000080]" /> IMPORT CSV
             </button>
           </div>
@@ -106,8 +235,8 @@ const ProductTable = ({ setSide, setOpen }) => {
               <th className="px-4 py-3 text-center">ACTION</th>
             </tr>
           </thead>
-          <tbody className="">
-            {products.map((item) => (
+          <tbody>
+            {currentItems.map((item) => (
               <tr key={item.id} className="border-b text-sm hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <input
@@ -115,7 +244,7 @@ const ProductTable = ({ setSide, setOpen }) => {
                     className="accent-black cursor-pointer"
                   />
                 </td>
-                <td className="px-4 py-3 flex items-center font-poppins gap-2 whitespace-nowrap">
+                <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
                   <img
                     src={item.image}
                     alt="product"
@@ -123,15 +252,13 @@ const ProductTable = ({ setSide, setOpen }) => {
                   />
                   {item.name}
                 </td>
-                <td className="px-4 py-3 font-medium font-poppins">
-                  {item.category}
-                </td>
-                <td className="px-4 py-3 font-poppins">{item.stock}</td>
-                <td className="px-4 py-3 font-poppins">{item.price}</td>
-                <td className="px-4 py-3 ">
+                <td className="px-4 py-3 font-medium">{item.category}</td>
+                <td className="px-4 py-3">{item.stock}</td>
+                <td className="px-4 py-3">{item.price}</td>
+                <td className="px-4 py-3">
                   <div className="flex items-center justify-center gap-3">
-                    <RiPencilLine className="cursor-pointer text-xl " />
-                    <FiTrash className="cursor-pointer text-xl " />
+                    <RiPencilLine className="cursor-pointer text-xl" />
+                    <FiTrash className="cursor-pointer text-xl" />
                   </div>
                 </td>
               </tr>
@@ -139,20 +266,40 @@ const ProductTable = ({ setSide, setOpen }) => {
           </tbody>
         </table>
 
-        {/* Footer */}
+        {/* Pagination Footer */}
         <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
           <p className="text-black font-medium">
-            SHOWING 1 TO 8 OF 100 PRODUCT
+            SHOWING {startIndex + 1} TO{" "}
+            {Math.min(startIndex + itemsPerPage, products.length)} OF{" "}
+            {products.length} PRODUCTS
           </p>
 
           <div className="flex items-center gap-1">
-            <button className="border px-3 py-1 rounded-md text-lg">
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+              className="border px-3 py-1 rounded-md text-lg disabled:opacity-40"
+            >
               &lt;
             </button>
-            <button className="border px-4 py-2 rounded-md bg-black text-white">
-              1
-            </button>
-            <button className="border px-3 py-1 rounded-md text-lg">
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageClick(index + 1)}
+                className={`border px-4 py-2 rounded-md ${
+                  currentPage === index + 1
+                    ? "bg-black text-white"
+                    : "text-black bg-white"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className="border px-3 py-1 rounded-md text-lg disabled:opacity-40"
+            >
               &gt;
             </button>
           </div>

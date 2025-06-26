@@ -3,6 +3,8 @@ import { GoPerson } from "react-icons/go";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import Dashboard from "../../Pages/Admin/AdminPages/Dashboard";
 import Product from "../../Pages/Admin/AdminPages/Product";
+import Order from "../../Pages/Admin/AdminPages/Order";
+import Customer from "../../Pages/Admin/AdminPages/Customer";
 
 // Optional: You can customize this
 const PageHeader = () => {
@@ -16,8 +18,8 @@ const PageHeader = () => {
       <Product setSide={setSide} side={side} setOpen={setOpen} open={open} />
     ),
     "/admin/dashboard": <Dashboard />,
-    "/admin/order": "Order History",
-    "/admin/customer": "Customer List",
+    "/admin/order": <Order />,
+    "/admin/customer": <Customer/>,
     "/admin/categories": "Product Categories",
     "/admin/notification": "Notifications",
   };
@@ -44,7 +46,7 @@ const Sidebar = () => {
   return (
     <div className="flex bg-[#FAFAFA] relative min-h-screen">
       {/* Sidebar */}
-      <div className="h-screen w-1/4 text-center bg-white shadow-md flex flex-col justify-between">
+      <div className="h-screen min-w-1/4 px-3 text-center bg-white shadow-md flex flex-col justify-between">
         <div className="flex flex-col gap-7">
           {/* Logo */}
           <div className="p-6 mt-5 text-xl">
