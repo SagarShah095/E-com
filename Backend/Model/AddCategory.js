@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const AddCateSchema = new mongoose.Schema(
   {
     category: { type: String, require: true },
+    subcategory: { type: String, require: true },
     desc: { type: String, require: true },
     img: { type: String, require: true },
     status: { type: String, require: true },

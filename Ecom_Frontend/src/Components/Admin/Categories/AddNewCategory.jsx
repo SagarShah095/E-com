@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import Select from "react-select";
 import { FaTrash } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 import axios from "axios";
+import { useAuth } from "../../../context/AuthContext";
 
 const AddNewCategory = ({ setCate }) => {
   const [data, setData] = useState({
@@ -11,7 +12,12 @@ const AddNewCategory = ({ setCate }) => {
     category: "",
     desc: "",
     status: "",
+    subcategory: "",
   });
+  const [preview, setPreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  const { refreshAuth } = useAuth();
 
   console.log(data, "dtat");
 
@@ -19,31 +25,41 @@ const AddNewCategory = ({ setCate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("img", data.img);
-    formData.append("category", data.category);
-    formData.append("desc", data.desc);
-    formData.append("status", data.status);
+    setUploading(true);
 
     try {
-      const token = localStorage.getItem("token"); // 👈 or from context, cookies, etc.
+      // 1. Upload to Cloudinary
+      const cloudData = new FormData();
+      cloudData.append("file", data.img);
+      cloudData.append("upload_preset", "E-commerce"); // Replace this
+      cloudData.append("cloud_name", "de7xfobxo"); // Replace this
 
+      const cloudRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/de7xfobxo/image/upload", // Replace this
+        cloudData
+      );
+
+      const imageUrl = cloudRes.data.secure_url;
+
+      // 2. Send to your own backend
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         `${API_URL}/api/cate/post-cate`,
-        formData,
+        {
+          img: imageUrl, // 👈 Use uploaded Cloudinary URL
+          category: data.category,
+          desc: data.desc,
+          status: data.status,
+        },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 👈 token added here
-            // Do NOT manually set Content-Type for FormData
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (response.data) {
-        console.log("Data successfully stored");
-      } else {
-        console.log("Error in category post data");
+        console.log("Category added with Cloudinary image");
       }
 
       setData({
@@ -52,8 +68,11 @@ const AddNewCategory = ({ setCate }) => {
         desc: "",
         status: "",
       });
-    } catch (error) {
-      console.error("Upload failed:", error);
+      setPreview(null);
+    } catch (err) {
+      console.error("Upload failed", err);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -109,19 +128,45 @@ const AddNewCategory = ({ setCate }) => {
               />
             </div>
 
+            <div>
+              <h1 className="font-poppins text-sm uppercase">Sub Category</h1>
+              <input
+                type="text"
+                name="subcategory"
+                onChange={handleChange}
+                value={data.subcategory}
+                className="placeholder:capitalize font-poppins mt-2  w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
+                placeholder="Enter Sub Category name"
+              />
+            </div>
+
             {/* Category and Subcategory */}
             <div>
               <h1 className="font-poppins text-sm uppercase">Category Image</h1>
-              <div className="h-fit  rounded-md mt-2">
+              <div className="h-fit rounded-md mt-2">
                 <input
                   type="file"
                   name="img"
                   accept="image/*"
-                  onChange={(e) => setData({ ...data, img: e.target.files[0] })}
-                  className="w-full font-poppins cursor-pointer border-dashed h-[25vh] text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setData({ ...data, img: file });
+                      setPreview(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="w-full cursor-pointer border-dashed border rounded-md p-3"
                 />
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full max-h-60 object-contain mt-2 rounded-md border"
+                  />
+                )}
               </div>
             </div>
+
             <div>
               <h1 className="font-poppins text-sm uppercase">Status</h1>
               <div className="flex gap-3 mt-2">

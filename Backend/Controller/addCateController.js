@@ -1,14 +1,15 @@
 const AddCategory = require("../Model/AddCategory");
 
 const postCate = async (req, res) => {
-  const { category, desc, status } = req.body;
+  const { category, desc, status, subcategory, img } = req.body;
 
   try {
     const newCate = new AddCategory({
-      img: req.file ? req.file.filename : "",
+      img,
       category,
       desc,
       status,
+      subcategory,
     });
 
     await newCate.save();
@@ -26,6 +27,22 @@ const postCate = async (req, res) => {
 };
 
 const getCate = async (req, res) => {
+  try {
+    const category = await AddCategory.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      category,
+      message: "Category retrieved successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const putCate = async (req, res) => {
   try {
     const category = await AddCategory.find().sort({ createdAt: -1 });
     return res.status(200).json({

@@ -6,6 +6,6 @@ const upload = require("../Middleware/Multer");
 const router = express.Router();
 
 router.post("/post-cate", upload.single("img"), postCate);
-router.get("/get-cate", getCate);
+router.get("/get-cate", verifyToken, getCate);
 
 module.exports = router;

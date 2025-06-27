@@ -1,87 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FiDownload, FiTrash } from "react-icons/fi";
 import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
 import SubCategoryTable from "./SubCategoryTable";
+import axios from "axios";
+import { useAuth } from "../../../context/AuthContext";
 
-const products = [
-  {
-    id: 1,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
-    category: "SPORT",
-    stock: 220,
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 2,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Adidas UltraBoost",
-    category: "SPORT",
-    stock: 150,
-    price: "₹6999",
-    status: "Active",
-  },
-  {
-    id: 3,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Puma RS-X",
-    category: "CASUAL",
-    stock: 120,
-    price: "₹5999",
-    status: "Active",
-  },
-  {
-    id: 4,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Reebok Classic",
-    category: "CASUAL",
-    stock: 80,
-    price: "₹3499",
-    status: "Active",
-  },
-  {
-    id: 5,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Bata Leather Boots",
-    category: "BOOTS",
-    stock: 70,
-    price: "₹3999",
-    status: "Active",
-  },
-  {
-    id: 6,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Woodland Trekker",
-    category: "BOOTS",
-    stock: 60,
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 7,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Sketchers Walk",
-    category: "WALKING",
-    stock: 130,
-    price: "₹2999",
-    status: "Inactive",
-  },
-];
+
 
 const CategoryTable = ({ setCate, setSubCate }) => {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || "category";
   });
+  const [getCate, setGetCate] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const API_URL = import.meta.env.VITE_API_URL;
 
+  const { refreshAuth } = useAuth();
   // Pagination logic
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(getCate.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = products.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = getCate.slice(startIndex, startIndex + itemsPerPage);
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 👈 or from context, cookies, etc.
+
+      const response = await axios.get(`${API_URL}/api/cate/get-cate`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 token added here
+          // Do NOT manually set Content-Type for FormData
+        },
+      });
+      setGetCate(response?.data?.category);
+      refreshAuth();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log(getCate, "getCategetCategetCate");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -104,24 +68,13 @@ const CategoryTable = ({ setCate, setSubCate }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="flex gap-2 bg-white my-2 p-1 rounded-full">
-          <button
+        <div className="flex gap-2  my-2 p-1 rounded-full">
+          <div
             onClick={() => handleTabChange("category")}
-            className={`font-poppins rounded-full uppercase font-semibold  p-3 px-5  ${
-              activeTab === "category" ? "bg-black text-white " : ""
-            }`}
+            className={`font-poppins rounded-full uppercase font-semibold py-3`}
           >
             Category
-          </button>
-
-          <button
-            onClick={() => handleTabChange("subcategory")}
-            className={`font-poppins uppercase font-semibold  p-3 rounded-full  ${
-              activeTab === "subcategory" ? "bg-black text-white " : ""
-            }`}
-          >
-            Subcategory
-          </button>
+          </div>
         </div>
         <div>
           <button
@@ -197,17 +150,14 @@ const CategoryTable = ({ setCate, setSubCate }) => {
                   </th>
                   <th className="px-4 py-3">CATEGORY NAME</th>
                   <th className="px-4 py-3">DESCRIPTION</th>
-                  <th className="px-4 py-3 text-center">PRODUCT COUNT</th>
+                  {/* <th className="px-4 py-3 text-center">PRODUCT COUNT</th> */}
                   <th className="px-4 py-3 text-center">STATUS</th>
                   <th className="px-4 py-3 text-center">ACTION</th>
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-b text-sm hover:bg-gray-50"
-                  >
+                {getCate.map((item, i) => (
+                  <tr key={i} className="border-b text-sm hover:bg-gray-50">
                     <td className="px-4 py-3">
                       <input
                         type="checkbox"
@@ -216,26 +166,29 @@ const CategoryTable = ({ setCate, setSubCate }) => {
                     </td>
                     <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
                       <img
-                        src={item.image}
+                        src={`${item.img}`} // ✅ add full path
                         alt="product"
                         className="w-10 h-10 object-contain"
                       />
-                      {item.name}
+
+                      {item.category}
                     </td>
-                    <td className="px-4 py-3 font-medium ">{item.category}</td>
-                    <td className="px-4 py-3 text-center">{item.stock}</td>
-                    <td
-                      className={`px-4 py-3 text-center uppercase`}
-                    >
-                      <div className={`font-poppins text-sm rounded-md py-2 ${
-                        item.status === "Active"
-                          ? "bg-black text-white"
-                          : " bg-[#00000066] text-white"
-                      }`}>{item.status}</div>
+                    <td className="px-4 py-3 font-medium ">{item.desc}</td>
+                    {/* <td className="px-4 py-3 text-center">{item.stock}</td> */}
+                    <td className={`px-4 py-3 text-center uppercase`}>
+                      <div
+                        className={`font-poppins text-sm rounded-md py-2 ${
+                          item.status === "active"
+                            ? "bg-black text-white"
+                            : "bg-[#00000066] text-white"
+                        }`}
+                      >
+                        {item.status}
+                      </div>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-3">
-                        <RiPencilLine className="cursor-pointer text-xl" /> 
+                        <RiPencilLine className="cursor-pointer text-xl" />
                         <FiTrash className="cursor-pointer text-xl" />
                       </div>
                     </td>
@@ -248,8 +201,8 @@ const CategoryTable = ({ setCate, setSubCate }) => {
             <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
               <p className="text-black font-medium">
                 SHOWING {startIndex + 1} TO{" "}
-                {Math.min(startIndex + itemsPerPage, products.length)} OF{" "}
-                {products.length} PRODUCTS
+                {Math.min(startIndex + itemsPerPage, getCate.length)} OF{" "}
+                {getCate.length} PRODUCTS
               </p>
 
               <div className="flex items-center gap-1">
@@ -284,8 +237,6 @@ const CategoryTable = ({ setCate, setSubCate }) => {
             </div>
           </div>
         )}
-
-        {activeTab === "subcategory" && <SubCategoryTable />}
       </div>
     </div>
   );

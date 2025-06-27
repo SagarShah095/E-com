@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // ✅ Fetch all user data
-  const fetchUsers = async () => {
+  const AllUser = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/auth/getuser`);
       setData(response?.data?.data || []);
@@ -45,13 +45,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    AllUser();
     verifyUser();
   }, []);
 
   const refreshAuth = async () => {
     await verifyUser();
-    await fetchUsers();
+    await AllUser();
   };
 
   // console.log(user,"USerUSer")
@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated,
         matchId,
         refreshAuth,
+        data,
       }}
     >
       {children}

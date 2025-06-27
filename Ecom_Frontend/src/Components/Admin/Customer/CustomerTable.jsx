@@ -3,126 +3,24 @@ import { FaPlus } from "react-icons/fa";
 import { FiDownload, FiTrash } from "react-icons/fi";
 import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useAuth } from "../../../context/AuthContext";
 
-const products = [
-  {
-    id: 1,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 2,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 3,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 4,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 5,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 6,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 7,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 8,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 9,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 10,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 11,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-  {
-    id: 12,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "User123",
-    email: "User123@gmail.com",
-    pno: "XXXXXXXX9",
-    price: "₹4999",
-    status: "Active",
-  },
-];
+
 
 const CustomerTable = ({ setSide, setOpen }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const { data } = useAuth();
+
+  const onlySomeData = data.filter((item) => item.role === "user")
+
+  console.log(onlySomeData,"onlySomeDataonlySomeDataonlySomeData");
+  
 
   // Pagination logic
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(onlySomeData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = products.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = onlySomeData.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -189,14 +87,14 @@ const CustomerTable = ({ setSide, setOpen }) => {
               <th className="px-4 py-3">CUSTOMER</th>
               <th className="px-4 py-3">EMAIL</th>
               <th className="px-4 py-3">PHONE</th>
-              <th className="px-4 py-3">PURCHASE</th>
-              <th className="px-4 py-3 text-center">STATUS</th>
+              {/* <th className="px-4 py-3">PURCHASE</th> */}
+              {/* <th className="px-4 py-3 text-center">STATUS</th> */}
               <th className="px-4 py-3 text-center">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item) => (
-              <tr key={item.id} className="border-b text-sm hover:bg-gray-50">
+            {onlySomeData.map((item, id) => (
+              <tr key={id} className="border-b text-sm hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <input
                     type="checkbox"
@@ -204,21 +102,16 @@ const CustomerTable = ({ setSide, setOpen }) => {
                   />
                 </td>
                 <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
-                  <img
-                    src={item.image}
-                    alt="product"
-                    className="w-10 h-10 object-contain"
-                  />
-                  {item.name}
+                  {item.username}
                 </td>
                 <td className="px-4 py-3 font-medium">{item.email}</td>
-                <td className="px-4 py-3">{item.pno}</td>
-                <td className="px-4 py-3">{item.price}</td>
-                <td className="px-4 py-3 text-center">
+                <td className="px-4 py-3">{item.phonenumber}</td>
+                {/* <td className="px-4 py-3">{item.price}</td> */}
+                {/* <td className="px-4 py-3 text-center">
                   <div className="bg-black p-2 text-white rounded-md">
                     {item.status}
                   </div>
-                </td>
+                </td> */}
 
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-center gap-3">
@@ -234,8 +127,8 @@ const CustomerTable = ({ setSide, setOpen }) => {
         <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
           <p className="text-black font-medium">
             SHOWING {startIndex + 1} TO{" "}
-            {Math.min(startIndex + itemsPerPage, products.length)} OF{" "}
-            {products.length} PRODUCTS
+            {Math.min(startIndex + itemsPerPage, onlySomeData.length)} OF{" "}
+            {onlySomeData.length} PRODUCTS
           </p>
 
           <div className="flex items-center gap-1">
