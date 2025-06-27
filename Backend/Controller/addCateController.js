@@ -43,12 +43,24 @@ const getCate = async (req, res) => {
 };
 
 const putCate = async (req, res) => {
+  const { category, desc, status, subcategory, img, _id } = req.body;
+
   try {
-    const category = await AddCategory.find().sort({ createdAt: -1 });
+    const updatedCategory = await AddCategory.findByIdAndUpdate(
+      _id,
+      { category, desc, status, subcategory, img },
+      { new: true }
+    );
+    if (!updatedCategory) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Category not found" });
+    }
+
     return res.status(200).json({
       success: true,
-      category,
-      message: "Category retrieved successfully",
+      message: "Category updated successfully",
+      category: updatedCategory,
     });
   } catch (error) {
     return res.status(500).json({
@@ -58,4 +70,4 @@ const putCate = async (req, res) => {
   }
 };
 
-module.exports = { postCate, getCate };
+module.exports = { postCate, getCate, putCate };

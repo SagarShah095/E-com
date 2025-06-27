@@ -6,7 +6,7 @@ import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
 
-const AddNewCategory = ({ setCate }) => {
+const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
   const [data, setData] = useState({
     img: "",
     category: "",
@@ -14,70 +14,153 @@ const AddNewCategory = ({ setCate }) => {
     status: "",
     subcategory: "",
   });
+
+  const [formData, setFormData] = useState({
+    _id: "",
+    img: "",
+    category: "",
+    desc: "",
+    status: "",
+    subcategory: "",
+  });
+
+  const [mainData, setMaindata] = useState([]);
+  const [ogData, setOgdata] = useState({});
+
   const [preview, setPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   const { refreshAuth } = useAuth();
 
   console.log(data, "dtat");
+  console.log(getData, "getDatagetData");
 
   const API_URL = import.meta.env.VITE_API_URL;
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token"); // 👈 or from context, cookies, etc.
+
+      const response = await axios.get(`${API_URL}/api/cate/get-cate`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 token added here
+          // Do NOT manually set Content-Type for FormData
+        },
+      });
+      setMaindata(response?.data?.category);
+      refreshAuth();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const matchPrd = mainData?.find((item) => item?._id === update);
+
+  const updateData = async () => {
+    try {
+      const response = await axios.put(`${API_URL}/api/cate/put-cate`, data);
+      if (response.data.success) {
+        console.log("updateData updated successfully:", response.data);
+      }
+
+      setOgdata(response.data);
+    } catch (error) {
+      console.error(
+        "updateData update failed:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (update && open && matchPrd) {
+      setFormData({
+        _id: matchPrd._id,
+        category: matchPrd.category || "",
+        desc: matchPrd.desc || "",
+        status: matchPrd.status || "",
+        subcategory: matchPrd.subcategory || "",
+        img: matchPrd.img || "",
+      });
+      setPreview(matchPrd.img || null);
+    }
+  }, [update, open, matchPrd]);
+
+  console.log(ogData, "ogDataogDataogDataogData");
+
+  console.log(mainData, "mainDatamainData");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUploading(true);
 
     try {
-      // 1. Upload to Cloudinary
-      const cloudData = new FormData();
-      cloudData.append("file", data.img);
-      cloudData.append("upload_preset", "E-commerce"); // Replace this
-      cloudData.append("cloud_name", "de7xfobxo"); // Replace this
+      let imageUrl = formData.img;
 
-      const cloudRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/de7xfobxo/image/upload", // Replace this
-        cloudData
-      );
-
-      const imageUrl = cloudRes.data.secure_url;
-
-      // 2. Send to your own backend
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API_URL}/api/cate/post-cate`,
-        {
-          img: imageUrl, // 👈 Use uploaded Cloudinary URL
-          category: data.category,
-          desc: data.desc,
-          status: data.status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.data) {
-        console.log("Category added with Cloudinary image");
+      // If image is a File, upload to Cloudinary
+      if (formData.img instanceof File) {
+        const cloudData = new FormData();
+        cloudData.append("file", formData.img);
+        cloudData.append("upload_preset", "E-commerce");
+        const cloudRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/de7xfobxo/image/upload",
+          cloudData
+        );
+        imageUrl = cloudRes.data.secure_url;
       }
 
-      setData({
+      const payload = {
+        ...formData,
+        img: imageUrl,
+      };
+
+      const token = localStorage.getItem("token");
+
+      if (open) {
+        // UPDATE
+        await axios.put(`${API_URL}/api/cate/put-cate`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log("Category updated");
+      } else {
+        // ADD
+        await axios.post(`${API_URL}/api/cate/post-cate`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log("Category added");
+      }
+
+      setFormData({
+        _id: "",
         img: "",
         category: "",
         desc: "",
         status: "",
+        subcategory: "",
       });
       setPreview(null);
-    } catch (err) {
-      console.error("Upload failed", err);
+      setCate(false);
+      setOpen(false);
+      setGetCate && setGetCate([]); // optional refresh
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
     } finally {
       setUploading(false);
     }
   };
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCancel = () => {
+    setCate(false);
+    setOpen(false);
   };
 
   return (
@@ -92,11 +175,11 @@ const AddNewCategory = ({ setCate }) => {
       <form onSubmit={handleSubmit}>
         <div className="flex items-center justify-between">
           <h1 className="font-poppins font-semibold text-lg">
-            Add New Category
+            {open ? "Update Category" : "Add New Category"}
           </h1>
           <RxCross2
             className="text-2xl cursor-pointer"
-            onClick={() => setCate(false)}
+            onClick={handleCancel}
           />
         </div>
         <div className="flex flex-col justify-between h-[90vh]">
@@ -108,7 +191,7 @@ const AddNewCategory = ({ setCate }) => {
                 type="text"
                 name="category"
                 onChange={handleChange}
-                value={data.category}
+                value={open ? `${matchPrd?.category}` : data.category}
                 className="placeholder:capitalize font-poppins mt-2  w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
                 placeholder="Enter Category name"
               />
@@ -151,7 +234,7 @@ const AddNewCategory = ({ setCate }) => {
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
-                      setData({ ...data, img: file });
+                      setFormData((prev) => ({ ...prev, img: file }));
                       setPreview(URL.createObjectURL(file));
                     }
                   }}

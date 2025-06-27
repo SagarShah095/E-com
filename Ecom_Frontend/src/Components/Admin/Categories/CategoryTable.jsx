@@ -6,17 +6,24 @@ import SubCategoryTable from "./SubCategoryTable";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
 
-
-
-const CategoryTable = ({ setCate, setSubCate }) => {
+const CategoryTable = ({
+  setCate,
+  setSubCate,
+  setUpdate,
+  update,
+  open,
+  setOpen,
+  getCate,
+  setGetCate,
+}) => {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || "category";
   });
-  const [getCate, setGetCate] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const API_URL = import.meta.env.VITE_API_URL;
+  // const [update, setUpdate] = useState("");
 
   const { refreshAuth } = useAuth();
   // Pagination logic
@@ -55,6 +62,11 @@ const CategoryTable = ({ setCate, setSubCate }) => {
     // }
   };
 
+  const handleUpdate = (id) => {
+    setUpdate(id);
+    setOpen(true);
+  };
+
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -64,6 +76,10 @@ const CategoryTable = ({ setCate, setSubCate }) => {
   };
 
   const handlePageClick = (number) => setCurrentPage(number);
+
+  console.log(update, "updateupdateupdate");
+
+  // const setUp =
 
   return (
     <div>
@@ -188,7 +204,10 @@ const CategoryTable = ({ setCate, setSubCate }) => {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-3">
-                        <RiPencilLine className="cursor-pointer text-xl" />
+                        <RiPencilLine
+                          className="cursor-pointer text-xl"
+                          onClick={() => handleUpdate(item?._id)}
+                        />
                         <FiTrash className="cursor-pointer text-xl" />
                       </div>
                     </td>
