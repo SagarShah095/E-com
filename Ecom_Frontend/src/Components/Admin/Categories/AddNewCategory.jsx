@@ -3,8 +3,64 @@ import { RxCross2 } from "react-icons/rx";
 import Select from "react-select";
 import { FaTrash } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
+import axios from "axios";
 
-const AddNewCategory = ({setCate}) => {
+const AddNewCategory = ({ setCate }) => {
+  const [data, setData] = useState({
+    img: "",
+    category: "",
+    desc: "",
+    status: "",
+  });
+
+  console.log(data, "dtat");
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("img", data.img);
+    formData.append("category", data.category);
+    formData.append("desc", data.desc);
+    formData.append("status", data.status);
+
+    try {
+      const token = localStorage.getItem("token"); // 👈 or from context, cookies, etc.
+
+      const response = await axios.post(
+        `${API_URL}/api/cate/post-cate`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 token added here
+            // Do NOT manually set Content-Type for FormData
+          },
+        }
+      );
+
+      if (response.data) {
+        console.log("Data successfully stored");
+      } else {
+        console.log("Error in category post data");
+      }
+
+      setData({
+        img: "",
+        category: "",
+        desc: "",
+        status: "",
+      });
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
   return (
     <div
       className={
@@ -14,9 +70,11 @@ const AddNewCategory = ({setCate}) => {
         //   ${setSide ? "translate-x-0" : "translate-x-full"} z-50 shadow-xl
       }
     >
-      <div>
+      <form onSubmit={handleSubmit}>
         <div className="flex items-center justify-between">
-          <h1 className="font-poppins font-semibold text-lg">Add New Category</h1>
+          <h1 className="font-poppins font-semibold text-lg">
+            Add New Category
+          </h1>
           <RxCross2
             className="text-2xl cursor-pointer"
             onClick={() => setCate(false)}
@@ -28,8 +86,11 @@ const AddNewCategory = ({setCate}) => {
             <div>
               <h1 className="font-poppins text-sm uppercase">Category Name</h1>
               <input
-                type="dropdown"
-                className="placeholder:capitalize cursor-pointer font-poppins mt-2 uppercase w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
+                type="text"
+                name="category"
+                onChange={handleChange}
+                value={data.category}
+                className="placeholder:capitalize font-poppins mt-2  w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
                 placeholder="Enter Category name"
               />
             </div>
@@ -40,8 +101,11 @@ const AddNewCategory = ({setCate}) => {
               <textarea
                 rows={6}
                 type="date"
+                name="desc"
+                onChange={handleChange}
+                value={data.desc}
                 placeholder="Enter category description"
-                className="w-full uppercase mt-2 font-poppins placeholder:capitalize text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
+                className="w-full mt-2 font-poppins placeholder:capitalize placeholder:text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
               />
             </div>
 
@@ -51,37 +115,59 @@ const AddNewCategory = ({setCate}) => {
               <div className="h-fit  rounded-md mt-2">
                 <input
                   type="file"
-                  placeholder="Enter category description"
-                  className="w-full uppercase font-poppins cursor-pointer hide border-dashed h-[25vh] placeholder:capitalize text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
+                  name="img"
+                  accept="image/*"
+                  onChange={(e) => setData({ ...data, img: e.target.files[0] })}
+                  className="w-full font-poppins cursor-pointer border-dashed h-[25vh] text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
                 />
               </div>
             </div>
             <div>
               <h1 className="font-poppins text-sm uppercase">Status</h1>
               <div className="flex gap-3 mt-2">
-                <div className="flex gap-2">
-                  <input type="radio" className="accent-black cursor-pointer" />
-                  <h1 className="font-poppins text-sm">Active</h1>
-                </div>
-                <div className="flex gap-2">
-                  <input type="radio" className="accent-black cursor-pointer" />
-                  <h1 className="font-poppins text-sm">Inactive</h1>
-                </div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="active"
+                    checked={data.status === "active"}
+                    onChange={handleChange}
+                    className="accent-black cursor-pointer"
+                  />
+                  <span className="font-poppins text-sm">Active</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="inactive"
+                    checked={data.status === "inactive"}
+                    onChange={handleChange}
+                    className="accent-black cursor-pointer"
+                  />
+                  <span className="font-poppins text-sm">Inactive</span>
+                </label>
               </div>
             </div>
           </div>
           <div className="">
             <div className="uppercase font-medium font-poppins mt-5 flex justify-end gap-2">
-              <button className="border border-black px-4 py-3 rounded-lg">
+              <button
+                className="border border-black px-4 py-3 rounded-lg"
+                onClick={() => setCate(false)}
+              >
                 Cancel
               </button>
-              <button className="bg-black text-white px-4 py-3 rounded-lg">
+              <button
+                className="bg-black text-white px-4 py-3 rounded-lg"
+                type="submit"
+              >
                 Add Order
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

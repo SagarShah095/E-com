@@ -12,6 +12,7 @@ const products = [
     category: "SPORT",
     stock: 220,
     price: "₹4999",
+    status: "Active",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const products = [
     category: "SPORT",
     stock: 150,
     price: "₹6999",
+    status: "Active",
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ const products = [
     category: "CASUAL",
     stock: 120,
     price: "₹5999",
+    status: "Active",
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ const products = [
     category: "CASUAL",
     stock: 80,
     price: "₹3499",
+    status: "Active",
   },
   {
     id: 5,
@@ -44,6 +48,7 @@ const products = [
     category: "BOOTS",
     stock: 70,
     price: "₹3999",
+    status: "Active",
   },
   {
     id: 6,
@@ -52,6 +57,7 @@ const products = [
     category: "BOOTS",
     stock: 60,
     price: "₹4999",
+    status: "Active",
   },
   {
     id: 7,
@@ -60,110 +66,7 @@ const products = [
     category: "WALKING",
     stock: 130,
     price: "₹2999",
-  },
-  {
-    id: 8,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Converse All Star",
-    category: "CASUAL",
-    stock: 90,
-    price: "₹2899",
-  },
-  {
-    id: 9,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike Air Max",
-    category: "SPORT",
-    stock: 110,
-    price: "₹7599",
-  },
-  {
-    id: 10,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Fila Everyday",
-    category: "CASUAL",
-    stock: 140,
-    price: "₹1999",
-  },
-  {
-    id: 11,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Lancer QuickRun",
-    category: "SPORT",
-    stock: 180,
-    price: "₹1599",
-  },
-  {
-    id: 12,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Liberty Formal",
-    category: "FORMAL",
-    stock: 60,
-    price: "₹3999",
-  },
-  {
-    id: 13,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike Jordan High",
-    category: "SPORT",
-    stock: 40,
-    price: "₹8999",
-  },
-  {
-    id: 14,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Zara Stylish Heels",
-    category: "HEELS",
-    stock: 70,
-    price: "₹4499",
-  },
-  {
-    id: 15,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Gucci Leather",
-    category: "FORMAL",
-    stock: 30,
-    price: "₹10999",
-  },
-  {
-    id: 16,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Crocs Comfort",
-    category: "SANDALS",
-    stock: 200,
-    price: "₹2499",
-  },
-  {
-    id: 17,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "HRX Sprint",
-    category: "RUNNING",
-    stock: 100,
-    price: "₹3799",
-  },
-  {
-    id: 18,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Adidas Predator",
-    category: "SPORT",
-    stock: 95,
-    price: "₹6799",
-  },
-  {
-    id: 19,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Campus Bold",
-    category: "CASUAL",
-    stock: 150,
-    price: "₹1499",
-  },
-  {
-    id: 20,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "RedTape Elite",
-    category: "FORMAL",
-    stock: 85,
-    price: "₹5599",
+    status: "Inactive",
   },
 ];
 
@@ -201,13 +104,11 @@ const CategoryTable = ({ setCate, setSubCate }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="flex gap-5">
+        <div className="flex gap-2 bg-white my-2 p-1 rounded-full">
           <button
             onClick={() => handleTabChange("category")}
-            className={`font-poppins uppercase font-semibold my-3 p-3 rounded-md border ${
-              activeTab === "category"
-                ? "bg-white text-black border border-[#0000001A]"
-                : "bg-[#FFFFFF] text-[#00000080] border-[#0000001A]"
+            className={`font-poppins rounded-full uppercase font-semibold  p-3 px-5  ${
+              activeTab === "category" ? "bg-black text-white " : ""
             }`}
           >
             Category
@@ -215,10 +116,8 @@ const CategoryTable = ({ setCate, setSubCate }) => {
 
           <button
             onClick={() => handleTabChange("subcategory")}
-            className={`font-poppins uppercase font-semibold my-3 p-3 rounded-md border ${
-              activeTab === "subcategory"
-                ? "bg-white text-black border border-[#0000001A]"
-                : "bg-[#FFFFFF] text-[#00000080] border-[#0000001A]"
+            className={`font-poppins uppercase font-semibold  p-3 rounded-full  ${
+              activeTab === "subcategory" ? "bg-black text-white " : ""
             }`}
           >
             Subcategory
@@ -241,7 +140,7 @@ const CategoryTable = ({ setCate, setSubCate }) => {
         </div>
       </div>
 
-      <div className="bg-white p-6 overflow-y-scroll max-h-screen scrollbar-hide rounded-md shadow-md w-full overflow-x-auto">
+      <div className="bg-white p-6 overflow-y-scroll max-h-screen scrollbar-hide rounded-md  w-full overflow-x-auto">
         {/* Top Bar */}
         <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
           {/* Search Bar */}
@@ -325,10 +224,18 @@ const CategoryTable = ({ setCate, setSubCate }) => {
                     </td>
                     <td className="px-4 py-3 font-medium ">{item.category}</td>
                     <td className="px-4 py-3 text-center">{item.stock}</td>
-                    <td className="px-4 py-3 text-center">{item.price}</td>
+                    <td
+                      className={`px-4 py-3 text-center uppercase`}
+                    >
+                      <div className={`font-poppins text-sm rounded-md py-2 ${
+                        item.status === "Active"
+                          ? "bg-black text-white"
+                          : " bg-[#00000066] text-white"
+                      }`}>{item.status}</div>
+                    </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-3">
-                        <RiPencilLine className="cursor-pointer text-xl" />
+                        <RiPencilLine className="cursor-pointer text-xl" /> 
                         <FiTrash className="cursor-pointer text-xl" />
                       </div>
                     </td>

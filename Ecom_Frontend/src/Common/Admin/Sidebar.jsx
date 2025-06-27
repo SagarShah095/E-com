@@ -6,6 +6,7 @@ import Product from "../../Pages/Admin/AdminPages/Product";
 import Order from "../../Pages/Admin/AdminPages/Order";
 import Customer from "../../Pages/Admin/AdminPages/Customer";
 import Categories from "../../Pages/Admin/AdminPages/Categories";
+import Notification from "../../Pages/Admin/AdminPages/Notification";
 
 // Optional: You can customize this
 const PageHeader = () => {
@@ -22,7 +23,7 @@ const PageHeader = () => {
     "/admin/order": <Order />,
     "/admin/customer": <Customer />,
     "/admin/categories": <Categories />,
-    "/admin/notification": "Notifications",
+    "/admin/notification": <Notification />,
   };
 
   return (
@@ -33,7 +34,7 @@ const PageHeader = () => {
 };
 
 const Sidebar = () => {
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -128,5 +129,6 @@ const Sidebar = () => {
     </div>
   );
 };
-
+//qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+//zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 export default Sidebar;
