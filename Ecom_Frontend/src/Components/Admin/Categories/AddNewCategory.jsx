@@ -5,15 +5,21 @@ import { FaTrash } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
-  const [data, setData] = useState({
-    img: "",
-    category: "",
-    desc: "",
-    status: "",
-    subcategory: "",
-  });
+const AddNewCategory = ({
+  setCategory,
+  update,
+  setOpen,
+  setGetCate,
+  getData,
+  setRefresh,
+  setCurrentPage,
+  currentPage,
+}) => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const categoryId = queryParams.get("id");
 
   const [formData, setFormData] = useState({
     _id: "",
@@ -23,19 +29,25 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
     status: "",
     subcategory: "",
   });
-
   const [mainData, setMaindata] = useState([]);
-  const [ogData, setOgdata] = useState({});
-
   const [preview, setPreview] = useState(null);
-  const [uploading, setUploading] = useState(false);
-
-  const { refreshAuth } = useAuth();
-
-  console.log(data, "dtat");
   console.log(getData, "getDatagetData");
+  const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
+
+  const { refreshAuth } = useAuth();
+  //  useEffect(() => {
+  //   if (setCurrentPage) {
+  //     setCurrentPage((prev) => prev + 1);
+  //   }
+  // }, []); // empty dependency array to run only once
+
+  React.useEffect(() => {
+    if (categoryId) {
+      setOpen(true);
+    }
+  }, [categoryId]);
 
   const fetchData = async () => {
     try {
@@ -56,84 +68,38 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
 
   const matchPrd = mainData?.find((item) => item?._id === update);
 
-  const updateData = async () => {
-    try {
-      const response = await axios.put(`${API_URL}/api/cate/put-cate`, data);
-      if (response.data.success) {
-        console.log("updateData updated successfully:", response.data);
-      }
+  // const updateData = async () => {
+  //   try {
+  //     const response = await axios.put(`${API_URL}/api/cate/${formData._id}`, data);
+  //     if (response.data.success) {
+  //       console.log("updateData updated successfully:", response.data);
+  //     }
 
-      setOgdata(response.data);
-    } catch (error) {
-      console.error(
-        "updateData update failed:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (update && open && matchPrd) {
-      setFormData({
-        _id: matchPrd._id,
-        category: matchPrd.category || "",
-        desc: matchPrd.desc || "",
-        status: matchPrd.status || "",
-        subcategory: matchPrd.subcategory || "",
-        img: matchPrd.img || "",
-      });
-      setPreview(matchPrd.img || null);
-    }
-  }, [update, open, matchPrd]);
-
-  console.log(ogData, "ogDataogDataogDataogData");
-
-  console.log(mainData, "mainDatamainData");
+  //     setOgdata(response.data);
+  //   } catch (error) {
+  //     console.error(
+  //       "updateData update failed:",
+  //       error.response?.data || error.message
+  //     );
+  //   }
+  // };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setUploading(true);
-
-    try {
-      let imageUrl = formData.img;
-
-      // If image is a File, upload to Cloudinary
-      if (formData.img instanceof File) {
-        const cloudData = new FormData();
-        cloudData.append("file", formData.img);
-        cloudData.append("upload_preset", "E-commerce");
-        const cloudRes = await axios.post(
-          "https://api.cloudinary.com/v1_1/de7xfobxo/image/upload",
-          cloudData
-        );
-        imageUrl = cloudRes.data.secure_url;
-      }
-
-      const payload = {
-        ...formData,
-        img: imageUrl,
-      };
-
-      const token = localStorage.getItem("token");
-
-      if (open) {
-        // UPDATE
-        await axios.put(`${API_URL}/api/cate/put-cate`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
+    if (categoryId && mainData.length > 0) {
+      const match = mainData.find((item) => item._id === categoryId);
+      if (match) {
+        setFormData({
+          _id: match._id,
+          category: match.category || "",
+          desc: match.desc || "",
+          status: match.status || "",
+          subcategory: match.subcategory || "",
+          img: match.img || "",
         });
-        console.log("Category updated");
-      } else {
-        // ADD
-        await axios.post(`${API_URL}/api/cate/post-cate`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        console.log("Category added");
+        setPreview(match.img || null);
       }
-
+    } else {
+      // Reset form if adding new
       setFormData({
         _id: "",
         img: "",
@@ -143,14 +109,110 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
         subcategory: "",
       });
       setPreview(null);
-      setCate(false);
+    }
+  }, [categoryId, mainData]);
+
+  console.log(matchPrd, update, "matchPrdmatchPrd");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let imageUrl = formData.img;
+
+      // Upload image to Cloudinary if it's a File
+      if (formData.img instanceof File) {
+        const cloudData = new FormData();
+        cloudData.append("file", formData.img);
+        cloudData.append("upload_preset", "E-commerce");
+
+        const cloudRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/de7xfobxo/image/upload",
+          cloudData
+        );
+        imageUrl = cloudRes.data.secure_url;
+      }
+
+      const payload = {
+        category: formData.category,
+        desc: formData.desc,
+        status: formData.status,
+        subcategory: formData.subcategory,
+        img: imageUrl,
+      };
+
+      const token = localStorage.getItem("token");
+
+      if (formData._id) {
+        // UPDATE (PUT)
+        const res = await axios.put(
+          `${API_URL}/api/cate/${formData._id}`,
+          payload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Category updated");
+
+        const updatedCategory = res.data.category || {
+          ...payload,
+          _id: formData._id,
+        };
+
+        console.log({ ...payload, _id: formData._id }, "res.data.category");
+
+        // 🔄 Update the UI state directly
+        if (setGetCate) {
+          setGetCate((prev) =>
+            prev.map((item) =>
+              item._id === formData._id ? { ...item, ...updatedCategory } : item
+            )
+          );
+        }
+        if (getData) {
+          getData();
+        }
+      } else {
+        // CREATE (POST)
+        const res = await axios.post(`${API_URL}/api/cate/post-cate`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log("Category added");
+
+        const newCategory = res.data.category || res.data;
+        console.log(res.data, "newCategorynewCategory");
+
+        // 🆕 Push new category into list
+        if (setGetCate) {
+          setGetCate((prev) => [...prev, newCategory]);
+        }
+
+        if (getData) {
+          getData();
+        }
+      }
+
+      // Reset form
+      setFormData({
+        _id: "",
+        img: "",
+        category: "",
+        desc: "",
+        status: "",
+        subcategory: "",
+      });
+      setPreview(null);
       setOpen(false);
-      setGetCate && setGetCate([]); // optional refresh
+      setCategory(false);
+      // refreshAuth();
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
-    } finally {
-      setUploading(false);
     }
+    fetchData();
   };
 
   const handleChange = (e) => {
@@ -159,8 +221,9 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
   };
 
   const handleCancel = () => {
-    setCate(false);
+    setCategory(false);
     setOpen(false);
+    navigate(`/admin/categories`);
   };
 
   return (
@@ -175,7 +238,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
       <form onSubmit={handleSubmit}>
         <div className="flex items-center justify-between">
           <h1 className="font-poppins font-semibold text-lg">
-            {open ? "Update Category" : "Add New Category"}
+            {categoryId ? "Update Category" : "Add New Category"}
           </h1>
           <RxCross2
             className="text-2xl cursor-pointer"
@@ -191,7 +254,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                 type="text"
                 name="category"
                 onChange={handleChange}
-                value={open ? `${matchPrd?.category}` : data.category}
+                value={formData.category}
                 className="placeholder:capitalize font-poppins mt-2  w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
                 placeholder="Enter Category name"
               />
@@ -205,7 +268,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                 type="date"
                 name="desc"
                 onChange={handleChange}
-                value={data.desc}
+                value={formData.desc}
                 placeholder="Enter category description"
                 className="w-full mt-2 font-poppins placeholder:capitalize placeholder:text-[#00000080] p-3 focus:outline-none border border-[#00000080] rounded-md"
               />
@@ -217,7 +280,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                 type="text"
                 name="subcategory"
                 onChange={handleChange}
-                value={data.subcategory}
+                value={formData.subcategory}
                 className="placeholder:capitalize font-poppins mt-2  w-full p-3 focus:outline-none border border-[#00000080] rounded-md"
                 placeholder="Enter Sub Category name"
               />
@@ -258,7 +321,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                     type="radio"
                     name="status"
                     value="active"
-                    checked={data.status === "active"}
+                    checked={formData.status === "active"}
                     onChange={handleChange}
                     className="accent-black cursor-pointer"
                   />
@@ -269,7 +332,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                     type="radio"
                     name="status"
                     value="inactive"
-                    checked={data.status === "inactive"}
+                    checked={formData.status === "inactive"}
                     onChange={handleChange}
                     className="accent-black cursor-pointer"
                   />
@@ -282,7 +345,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
             <div className="uppercase font-medium font-poppins mt-5 flex justify-end gap-2">
               <button
                 className="border border-black px-4 py-3 rounded-lg"
-                onClick={() => setCate(false)}
+                onClick={() => setCategory(false)}
               >
                 Cancel
               </button>
@@ -290,7 +353,7 @@ const AddNewCategory = ({ setCate, update, setOpen, setGetCate, getData }) => {
                 className="bg-black text-white px-4 py-3 rounded-lg"
                 type="submit"
               >
-                Add Order
+                {categoryId ? "Update Category" : "Add Category"}
               </button>
             </div>
           </div>

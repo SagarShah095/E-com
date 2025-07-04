@@ -11,6 +11,7 @@ const {
   SendOTP,
   verifyOtp,
   resetPass,
+  deleteUser,
 } = require("../Controller/LoginController");
 
 const router = express.Router();
@@ -25,5 +26,6 @@ router.put("/updateAddress", verifyToken, AddressAdd);
 router.post("/send-otp", SendOTP);
 router.post("/verify-otp", verifyOtp);
 router.post("/reset-password", resetPass);
+router.delete("/:id", deleteUser);
 
 module.exports = router;

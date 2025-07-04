@@ -4,23 +4,40 @@ import { FiDownload, FiTrash } from "react-icons/fi";
 import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useAuth } from "../../../context/AuthContext";
-
-
+import axios from "axios";
 
 const CustomerTable = ({ setSide, setOpen }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const { data } = useAuth();
+  const { data, refreshAuth } = useAuth();
 
-  const onlySomeData = data.filter((item) => item.role === "user")
+  const onlySomeData = data.filter((item) => item.role === "user");
 
-  console.log(onlySomeData,"onlySomeDataonlySomeDataonlySomeData");
-  
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  console.log(onlySomeData, "onlySomeDataonlySomeDataonlySomeData");
 
   // Pagination logic
   const totalPages = Math.ceil(onlySomeData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = onlySomeData.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = onlySomeData.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`${API_URL}/api/auth/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      if (res.data.success) {
+        console.log("User deleted successfully");
+      }
+      refreshAuth();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -86,14 +103,14 @@ const CustomerTable = ({ setSide, setOpen }) => {
               </th>
               <th className="px-4 py-3">CUSTOMER</th>
               <th className="px-4 py-3">EMAIL</th>
-              <th className="px-4 py-3">PHONE</th>
+              <th className="px-4 py-3 text-center">PHONE</th>
               {/* <th className="px-4 py-3">PURCHASE</th> */}
               {/* <th className="px-4 py-3 text-center">STATUS</th> */}
               <th className="px-4 py-3 text-center">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            {onlySomeData.map((item, id) => (
+            {currentItems.map((item, id) => (
               <tr key={id} className="border-b text-sm hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <input
@@ -101,11 +118,11 @@ const CustomerTable = ({ setSide, setOpen }) => {
                     className="accent-black cursor-pointer"
                   />
                 </td>
-                <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
-                  {item.username}
+                <td >
+                  <div className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">{item.username}</div>
                 </td>
                 <td className="px-4 py-3 font-medium">{item.email}</td>
-                <td className="px-4 py-3">{item.phonenumber}</td>
+                <td className="px-4 py-3 text-center">{item.phonenumber || "-"}</td>
                 {/* <td className="px-4 py-3">{item.price}</td> */}
                 {/* <td className="px-4 py-3 text-center">
                   <div className="bg-black p-2 text-white rounded-md">
@@ -114,8 +131,13 @@ const CustomerTable = ({ setSide, setOpen }) => {
                 </td> */}
 
                 <td className="px-4 py-3">
-                  <div className="flex items-center justify-center gap-3">
-                    <BsThreeDotsVertical className="cursor-pointer text-xl" />
+                  <div className="flex items-center  justify-center gap-3">
+                    <div
+                      className="hover:bg-gray-200 duration-200 cursor-pointer p-2 rounded-full"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      <FiTrash className="cursor-pointer text-xl" />
+                    </div>
                   </div>
                 </td>
               </tr>

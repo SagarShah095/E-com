@@ -43,14 +43,16 @@ const getCate = async (req, res) => {
 };
 
 const putCate = async (req, res) => {
-  const { category, desc, status, subcategory, img, _id } = req.body;
+  const { category, desc, status, subcategory, img } = req.body;
+  const id = req.params.id;
 
   try {
     const updatedCategory = await AddCategory.findByIdAndUpdate(
-      _id,
+      id,
       { category, desc, status, subcategory, img },
       { new: true }
     );
+
     if (!updatedCategory) {
       return res
         .status(404)
@@ -70,4 +72,27 @@ const putCate = async (req, res) => {
   }
 };
 
-module.exports = { postCate, getCate, putCate };
+const deleteCate = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedCategory = await AddCategory.findByIdAndDelete(id);
+
+    if (!deletedCategory) {
+      res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting category",
+    });
+  }
+};
+
+module.exports = { postCate, getCate, putCate, deleteCate };

@@ -11,8 +11,8 @@ export const AuthProvider = ({ children }) => {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // console.log(data, "datatatata");
-
+  console.log(user, "User in AuthContext");
+  
   // ✅ Verify token and user
   const verifyUser = async () => {
     const token = localStorage.getItem("token");

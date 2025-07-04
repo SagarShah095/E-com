@@ -5,32 +5,35 @@ import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
 import SubCategoryTable from "./SubCategoryTable";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const CategoryTable = ({
-  setCate,
+  category,
+  setCategory,
   setSubCate,
   setUpdate,
   update,
-  open,
   setOpen,
   getCate,
   setGetCate,
+  refresh,
+  setCurrentPage,
+  currentPage,
 }) => {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem("activeTab") || "category";
   });
+  const [deleteCate, setDeleteCate] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const API_URL = import.meta.env.VITE_API_URL;
   // const [update, setUpdate] = useState("");
 
-  const { refreshAuth } = useAuth();
   // Pagination logic
   const totalPages = Math.ceil(getCate.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentItems = getCate.slice(startIndex, startIndex + itemsPerPage);
-
+  // console.log(currentItems, "currentItemscurrentItemscurrentItems");
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token"); // 👈 or from context, cookies, etc.
@@ -42,29 +45,27 @@ const CategoryTable = ({
         },
       });
       setGetCate(response?.data?.category);
-      refreshAuth();
     } catch (error) {
       console.error(error);
     }
   };
+  const navigate = useNavigate();
 
-  console.log(getCate, "getCategetCategetCate");
+  // console.log(getCate, "getCategetCategetCate");
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [category === false]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem("activeTab", tab);
-    // {
-    //   activeTab === 'category' ? setCate(true) : setCate(false)
-    // }
   };
 
   const handleUpdate = (id) => {
     setUpdate(id);
     setOpen(true);
+    navigate(`/admin/categories?id=${id}`);
   };
 
   const handlePrev = () => {
@@ -77,9 +78,21 @@ const CategoryTable = ({
 
   const handlePageClick = (number) => setCurrentPage(number);
 
-  console.log(update, "updateupdateupdate");
-
-  // const setUp =
+  const DeleteCate = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`${API_URL}/api/cate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setGetCate(() => getCate.filter((item) => item._id !== id));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -94,17 +107,11 @@ const CategoryTable = ({
         </div>
         <div>
           <button
-            onClick={() => {
-              if (activeTab === "category") {
-                setCate(true);
-              } else {
-                setSubCate(true);
-              }
-            }}
-            className="bg-black cursor-pointer text-white font-poppins font-medium uppercase p-3 rounded-md text-sm flex items-center gap-2"
+            onClick={() => setCategory(!category)}
+            className="bg-black cursor-pointer text-white font-poppins font-medium uppercase p-3 rounded-md 
+            text-sm flex items-center gap-2"
           >
-            <FaPlus className="text-sm" /> NEW{" "}
-            {activeTab === "category" ? "CATEGORY" : "SUBCATEGORY"}
+            <FaPlus className="text-sm" /> NEW Category{" "}
           </button>
         </div>
       </div>
@@ -166,13 +173,13 @@ const CategoryTable = ({
                   </th>
                   <th className="px-4 py-3">CATEGORY NAME</th>
                   <th className="px-4 py-3">DESCRIPTION</th>
-                  {/* <th className="px-4 py-3 text-center">PRODUCT COUNT</th> */}
+                  <th className="px-4 py-3 text-center">SUB CATEGORY</th>
                   <th className="px-4 py-3 text-center">STATUS</th>
                   <th className="px-4 py-3 text-center">ACTION</th>
                 </tr>
               </thead>
               <tbody>
-                {getCate.map((item, i) => (
+                {currentItems?.map((item, i) => (
                   <tr key={i} className="border-b text-sm hover:bg-gray-50">
                     <td className="px-4 py-3">
                       <input
@@ -182,24 +189,26 @@ const CategoryTable = ({
                     </td>
                     <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
                       <img
-                        src={`${item.img}`} // ✅ add full path
+                        src={`${item?.img}`} // ✅ add full path
                         alt="product"
                         className="w-10 h-10 object-contain"
                       />
 
-                      {item.category}
+                      {item?.category}
                     </td>
-                    <td className="px-4 py-3 font-medium ">{item.desc}</td>
-                    {/* <td className="px-4 py-3 text-center">{item.stock}</td> */}
+                    <td className="px-4 py-3 font-medium ">{item?.desc}</td>
+                    <td className="px-4 py-3 text-center">
+                      {item?.subcategory}
+                    </td>
                     <td className={`px-4 py-3 text-center uppercase`}>
                       <div
                         className={`font-poppins text-sm rounded-md py-2 ${
-                          item.status === "active"
+                          item?.status === "active"
                             ? "bg-black text-white"
                             : "bg-[#00000066] text-white"
                         }`}
                       >
-                        {item.status}
+                        {item?.status}
                       </div>
                     </td>
                     <td className="px-4 py-3">
@@ -208,7 +217,10 @@ const CategoryTable = ({
                           className="cursor-pointer text-xl"
                           onClick={() => handleUpdate(item?._id)}
                         />
-                        <FiTrash className="cursor-pointer text-xl" />
+                        <FiTrash
+                          className="cursor-pointer text-xl"
+                          onClick={() => DeleteCate(item?._id)}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -219,7 +231,7 @@ const CategoryTable = ({
             {/* Pagination Footer */}
             <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
               <p className="text-black font-medium">
-                SHOWING {startIndex + 1} TO{" "}
+                SHOWING {startIndex + 1} TO
                 {Math.min(startIndex + itemsPerPage, getCate.length)} OF{" "}
                 {getCate.length} PRODUCTS
               </p>

@@ -130,7 +130,6 @@ const verifyOtp = async (req, res) => {
   }
 };
 
-
 const resetPass = async (req, res) => {
   const { userId, password } = req.body;
 
@@ -141,6 +140,24 @@ const resetPass = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -351,4 +368,5 @@ module.exports = {
   SendOTP,
   verifyOtp,
   resetPass,
+  deleteUser,
 };
