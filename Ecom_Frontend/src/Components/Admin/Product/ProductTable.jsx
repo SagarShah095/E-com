@@ -1,179 +1,41 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FiDownload, FiTrash } from "react-icons/fi";
 import { RiSearch2Line, RiPencilLine } from "react-icons/ri";
+import { useAuth } from "../../../context/AuthContext";
+import { useEffect } from "react";
 
-const products = [
-  {
-    id: 1,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike CITY 'Sand'",
-    category: "SPORT",
-    stock: 220,
-    price: "₹4999",
-  },
-  {
-    id: 2,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Adidas UltraBoost",
-    category: "SPORT",
-    stock: 150,
-    price: "₹6999",
-  },
-  {
-    id: 3,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Puma RS-X",
-    category: "CASUAL",
-    stock: 120,
-    price: "₹5999",
-  },
-  {
-    id: 4,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Reebok Classic",
-    category: "CASUAL",
-    stock: 80,
-    price: "₹3499",
-  },
-  {
-    id: 5,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Bata Leather Boots",
-    category: "BOOTS",
-    stock: 70,
-    price: "₹3999",
-  },
-  {
-    id: 6,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Woodland Trekker",
-    category: "BOOTS",
-    stock: 60,
-    price: "₹4999",
-  },
-  {
-    id: 7,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Sketchers Walk",
-    category: "WALKING",
-    stock: 130,
-    price: "₹2999",
-  },
-  {
-    id: 8,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Converse All Star",
-    category: "CASUAL",
-    stock: 90,
-    price: "₹2899",
-  },
-  {
-    id: 9,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike Air Max",
-    category: "SPORT",
-    stock: 110,
-    price: "₹7599",
-  },
-  {
-    id: 10,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Fila Everyday",
-    category: "CASUAL",
-    stock: 140,
-    price: "₹1999",
-  },
-  {
-    id: 11,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Lancer QuickRun",
-    category: "SPORT",
-    stock: 180,
-    price: "₹1599",
-  },
-  {
-    id: 12,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Liberty Formal",
-    category: "FORMAL",
-    stock: 60,
-    price: "₹3999",
-  },
-  {
-    id: 13,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Nike Jordan High",
-    category: "SPORT",
-    stock: 40,
-    price: "₹8999",
-  },
-  {
-    id: 14,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Zara Stylish Heels",
-    category: "HEELS",
-    stock: 70,
-    price: "₹4499",
-  },
-  {
-    id: 15,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Gucci Leather",
-    category: "FORMAL",
-    stock: 30,
-    price: "₹10999",
-  },
-  {
-    id: 16,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Crocs Comfort",
-    category: "SANDALS",
-    stock: 200,
-    price: "₹2499",
-  },
-  {
-    id: 17,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "HRX Sprint",
-    category: "RUNNING",
-    stock: 100,
-    price: "₹3799",
-  },
-  {
-    id: 18,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Adidas Predator",
-    category: "SPORT",
-    stock: 95,
-    price: "₹6799",
-  },
-  {
-    id: 19,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "Campus Bold",
-    category: "CASUAL",
-    stock: 150,
-    price: "₹1499",
-  },
-  {
-    id: 20,
-    image: "/assets/Admin/Dashboard/product.png",
-    name: "RedTape Elite",
-    category: "FORMAL",
-    stock: 85,
-    price: "₹5599",
-  },
-];
-
-const ProductTable = ({ setSide, setOpen }) => {
+const ProductTable = ({ setSide, setOpen, open, side }) => {
+  const [productData, setProductData] = useState([]);
+  const { refreshAuth } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   // Pagination logic
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(productData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = products.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = productData.slice(startIndex, startIndex + itemsPerPage);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const fetchAddData = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/product/getPoduct`);
+      if (res.data.success) {
+        console.log("Product data fetched successfully", res.data.getPrd);
+      }
+      setProductData(res.data.getPrd);
+      refreshAuth();
+    } catch (error) {
+      console.error("Error in Add Product", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAddData();
+    refreshAuth();
+  }, [side === false, open === false]);
 
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -236,8 +98,8 @@ const ProductTable = ({ setSide, setOpen }) => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item) => (
-              <tr key={item.id} className="border-b text-sm hover:bg-gray-50">
+            {currentItems.map((item, id) => (
+              <tr key={id} className="border-b text-sm hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <input
                     type="checkbox"
@@ -246,11 +108,11 @@ const ProductTable = ({ setSide, setOpen }) => {
                 </td>
                 <td className="px-4 py-3 flex items-center gap-2 whitespace-nowrap">
                   <img
-                    src={item.image}
+                    src={item.images}
                     alt="product"
                     className="w-10 h-10 object-contain"
                   />
-                  {item.name}
+                  {item.productName}
                 </td>
                 <td className="px-4 py-3 font-medium">{item.category}</td>
                 <td className="px-4 py-3">{item.stock}</td>
@@ -270,8 +132,8 @@ const ProductTable = ({ setSide, setOpen }) => {
         <div className="mt-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2 text-sm font-poppins">
           <p className="text-black font-medium">
             SHOWING {startIndex + 1} TO{" "}
-            {Math.min(startIndex + itemsPerPage, products.length)} OF{" "}
-            {products.length} PRODUCTS
+            {Math.min(startIndex + itemsPerPage, productData.length)} OF{" "}
+            {productData.length} PRODUCTS
           </p>
 
           <div className="flex items-center gap-1">

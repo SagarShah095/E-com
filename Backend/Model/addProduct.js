@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 
 const AddSchema = new mongoose.Schema({
-  user_id: { type: String, require: true },
-  img: { type: String, require: true },
-  prdName: { type: String, require: true },
-  prdCategory: { type: String, require: true },
-  Price: { type: Number, require: true },
-  discount: { type: Number, require: true },
-  stock: { type: Number, require: true },
-  overview: { type: String, require: true },
-  material: { type: String },
-  color: { type: String, require: true },
-  whitelist: { type: Boolean, default: false },
+  productName: { type: String, required: true },
+  sku: { type: String, required: true },
+  category: { type: String, required: true },
+  subCategory: { type: String, required: true },
+  gender: { type: [String], required: true },        // ✅ multiple gender values
+  size: { type: [String], required: true },           // ✅ multiple size values
+  stock: { type: Number, required: true },
+  description1: { type: String, required: true },
+  description2: { type: String, required: true },
+  images: { type: String, required: true },
+  tags: { type: String, required: true },
+  price: { type: String, required: true },
+  status: { type: String, required: true },
 });
 
 module.exports = mongoose.model("AddProduct", AddSchema);

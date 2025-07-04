@@ -2,31 +2,36 @@ const AddProduct = require("../Model/addProduct");
 
 const addPrd = async (req, res) => {
   const {
-    img,
-    prdName,
-    prdCategory,
-    Price,
-    discount,
+    productName,
+    sku,
+    category,
+    subCategory,
+    gender,
+    size,
     stock,
-    overview,
-    material,
-    color,
-    whishlist,
-    
+    description1,
+    description2,
+    images,
+    tags,
+    price,
+    status,
   } = req.body;
 
   try {
     const newAddPrd = new AddProduct({
-      img: req.file ? req.file.filename : "",
-      prdName,
-      prdCategory,
-      Price,
-      discount,
+      productName,
+      sku,
+      category,
+      subCategory,
+      gender,
+      size,
       stock,
-      overview,
-      material,
-      color,
-      whishlist,
+      description1,
+      description2,
+      images,
+      tags,
+      price,
+      status,
     });
 
     await newAddPrd.save();

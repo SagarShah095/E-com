@@ -6,7 +6,7 @@ import ImportCVS from "../../../Components/Admin/Product/ImportCVS";
 const Product = ({ side, setSide, setOpen, open }) => {
   return (
     <div>
-      <ProductTable setSide={setSide} setOpen={setOpen} />
+      <ProductTable setSide={setSide} side={side} open={open} setOpen={setOpen} />
       {side && (
         <div className="fixed inset-0 bg-black bg-opacity-40 z-40 flex justify-end transition-all duration-300 ease-in-out">
           <ProductRightBar setSide={setSide} />
